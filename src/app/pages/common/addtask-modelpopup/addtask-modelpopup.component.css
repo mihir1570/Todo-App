@@ -1,0 +1,128 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+    z-index: 1000; /* Ensure it overlays other content */
+}
+
+/* Modal Content */
+.modal-content {
+    background: #ffffff;
+    border-radius: 12px; /* Softer corners */
+    padding: 20px; /* Reduced padding for compactness */
+    width: 90%; /* Responsive width */
+    max-width: 400px; /* Adjusted max width */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Stronger shadow for depth */
+    transform: translateY(-30px);
+    animation: slideDown 0.3s forwards;
+}
+
+/* Modal Header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eaeaea; /* Separator line */
+    padding-bottom: 10px;
+}
+
+/* Close Button */
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 28px; /* Larger close button */
+    color: #333; /* Darker color for contrast */
+    cursor: pointer;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 20px; /* Increased margin for better spacing */
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500; /* Bold for better readability */
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px; /* Adjusted padding */
+    border: 1px solid #ccc;
+    border-radius: 6px; /* Softer corners */
+    transition: border-color 0.3s; /* Transition for focus */
+}
+
+/* Focus State */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #007bff; /* Highlight border on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Textarea */
+textarea {
+    resize: none;
+    height: 100px; /* Set a fixed height */
+}
+
+/* Submit Button */
+.submit-btn {
+    padding: 10px; /* Consistent padding */
+    background-color: #007bff; /* Primary color */
+    color: white;
+    border: none;
+    border-radius: 6px; /* Softer corners */
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.3s; /* Add transition */
+}
+
+/* Hover State */
+.submit-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .modal-content {
+        padding: 20px; /* Reduced padding on small screens */
+    }
+}

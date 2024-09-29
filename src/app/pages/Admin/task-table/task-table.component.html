@@ -1,0 +1,60 @@
+<div class="bottom-data">
+  <div class="tasks">
+    <div class="header">
+      <i class="bx bx-task"></i>
+      <h3>Task List</h3>
+      <i class="bx bx-filter"></i>
+      <i class="bx bx-plus" (click)="addTaskClicked.emit()"></i>
+    </div>
+
+    <!-- Table Wrapper to enable scrolling for the table content -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Estimated Hours</th>
+            <th>Assigned To</th>
+            <th>Due On</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><p>Start Our Meeting</p></td>
+            <td>2 hrs</td>
+            <td><p>John Doe</p></td>
+            <td>14-08-2023</td>
+            <td>
+              <button class="action-btn duplicate"><i class="bx bx-copy"></i></button>
+              <button class="action-btn edit"><i class="bx bx-edit"></i></button>
+              <button class="action-btn delete"><i class="bx bx-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Analyse Our Site</p></td>
+            <td>3 hrs</td>
+            <td><p>Jane Smith</p></td>
+            <td>15-08-2023</td>
+            <td>
+              <button class="action-btn duplicate"><i class="bx bx-copy"></i></button>
+              <button class="action-btn edit"><i class="bx bx-edit"></i></button>
+              <button class="action-btn delete"><i class="bx bx-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Play Football</p></td>
+            <td>1 hr</td>
+            <td><p>Alex Johnson</p></td>
+            <td>16-08-2023</td>
+            <td>
+              <button class="action-btn duplicate"><i class="bx bx-copy"></i></button>
+              <button class="action-btn edit"><i class="bx bx-edit"></i></button>
+              <button class="action-btn delete"><i class="bx bx-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

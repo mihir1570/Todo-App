@@ -1,0 +1,37 @@
+<div class="main">
+  <header>
+    <div class="logo">
+      <img src="/assets/icons/Angular.svg" alt="Login Icon" />
+    </div>
+    <h1>Hi, welcome back!</h1>
+    <p>Login for <span class="text-white">Admin</span></p>
+  </header>
+  <form>
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="loginObj.email"
+      placeholder="Your email"
+      required
+    />
+    <input
+      type="password"
+      name="password"
+      [(ngModel)]="loginObj.password"
+      placeholder="Password"
+      minlength="6"
+      required
+    />
+    <p>Password must be at least 6 characters</p>
+
+    <button type="submit" (click)="onLogin()">Sign in</button>
+
+    <p class="text-white">Sign in using magic link</p>
+    <div class="or">or</div>
+    <button class="sso" type="button">Login with phone number</button>
+    <p>
+      You acknowledge that you read, and agree, to our
+      <a>Terms of Service</a> and our <a>Privacy Policy</a>.
+    </p>
+  </form>
+</div>

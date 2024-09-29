@@ -1,0 +1,149 @@
+body {
+    --light: #fbfbfb; /* Light background */
+    --grey: #25252c; /* Darker grey background */
+    --dark: #181a1e; /* Dark mode background */
+}
+
+.bottom-data {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: var(--light); /* Default light mode background */
+    color: var(--grey); /* Default text color */
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+}
+
+.header i {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+h3 {
+    margin: 0;
+    transition: color 0.3s;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap; /* Prevents table from breaking on small screens */
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+th {
+    background-color: var(--light); /* Light mode header */
+}
+
+td {
+    background-color: var(--light); /* Light mode table cell */
+}
+
+td img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.action-btn {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+    transition: background-color 0.2s;
+}
+
+.action-btn i {
+    font-size: 18px;
+}
+
+.action-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.action-btn.duplicate {
+    color: #2196F3; /* Blue */
+}
+
+.action-btn.edit {
+    color: #FFC107; /* Amber */
+}
+
+.action-btn.delete {
+    color: #F44336; /* Red */
+}
+
+/* Dark Mode Styles */
+body.dark .bottom-data {
+    background-color: var(--dark); /* Dark mode background */
+    color: #ffffff; 
+}
+
+body.dark .header i,
+body.dark h3 {
+    color: #ffffff; 
+}
+
+body.dark th {
+    background-color: var(--grey); 
+    color: #ffffff; 
+}
+
+body.dark td {
+    background-color: var(--grey);
+    color: #ffffff; 
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .header i.bx-plus {
+        order: -1;
+        /* margin-bottom: 10px; */
+    }
+
+    .header .bx-task {
+        display: none;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        white-space: nowrap;
+    }
+
+    th, td {
+        text-align: left; 
+    }
+}
