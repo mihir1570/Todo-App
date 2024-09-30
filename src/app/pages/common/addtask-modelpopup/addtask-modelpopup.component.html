@@ -1,36 +1,131 @@
 <div class="modal-overlay" (click)="close()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-        <div class="modal-header">
-            <h3>Add Task</h3>
-            <button class="close-btn" (click)="close()">&times;</button>
-        </div>
-        <form (submit)="addTask(); $event.preventDefault()">
-            <div class="form-group">
-                <label for="taskTitle">Task Title</label>
-                <input type="text" id="taskTitle" [(ngModel)]="taskTitle" required />
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" [(ngModel)]="description" maxlength="250" required></textarea>
-                <small>{{ description.length }} / 250 characters</small>
-            </div>
-            <div class="form-group">
-                <label for="assignedTo">Assign To</label>
-                <select id="assignedTo" [(ngModel)]="assignedTo" required>
-                    <option value="" disabled selected>Select a user</option>
-                    <option *ngFor="let user of users" [value]="user">{{ user }}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="estimatedTime">Estimated Time (hours)</label>
-                <input type="number" id="estimatedTime" [(ngModel)]="estimatedTime" min="1" required />
-            </div>
-            <div class="form-group">
-                <label for="dueDate">Due Date</label>
-                <input type="date" id="dueDate" [(ngModel)]="dueDate" required />
-            </div>
-            <button type="submit" class="submit-btn">Add Task</button>
-        </form>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Add Task</h3>
+      <button class="close-btn" (click)="close()">&times;</button>
     </div>
+    <form [formGroup]="addTaskForm">
+      <!-- Task Title -->
+      <div class="form-group">
+        <label for="taskTitle">Task Title</label>
+        <input
+          type="text"
+          id="taskTitle"
+          formControlName="taskTitle"
+          required
+        />
+        <div
+          *ngIf="
+            addTaskForm.controls['taskTitle'].touched &&
+            addTaskForm.controls['taskTitle'].hasError('required')
+          "
+          class="error-text"
+        >
+          Task title is required.
+        </div>
+        <div
+          *ngIf="
+            addTaskForm.controls['taskTitle'].touched &&
+            addTaskForm.controls['taskTitle'].hasError('minlength')
+          "
+          class="error-text"
+        >
+          Task title must be at least 3 characters long.
+        </div>
+      </div>
+
+      <!-- Task Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          formControlName="taskDescription"
+          maxlength="250"
+          required
+        ></textarea>
+        <small
+          *ngIf="
+            addTaskForm.controls['taskDescription'].touched &&
+            addTaskForm.controls['taskDescription'].hasError('required')
+          "
+          class="error-text"
+        >
+          Description is required.
+        </small>
+        <small
+          *ngIf="
+            addTaskForm.controls['taskDescription'].touched &&
+            addTaskForm.controls['taskDescription'].hasError('maxlength')
+          "
+          class="error-text"
+        >
+          Description cannot be more than 250 characters.
+        </small>
+      </div>
+
+      <!-- Assign To -->
+      <div class="form-group">
+        <label for="assignedTo">Assign To</label>
+        <select id="assignedTo" formControlName="taskAssignedTo" required>
+          <option value="" disabled selected>Select a user</option>
+          <option *ngFor="let user of users" [value]="user">{{ user }}</option>
+        </select>
+        <small
+          *ngIf="
+            addTaskForm.controls['taskAssignedTo'].touched &&
+            addTaskForm.controls['taskAssignedTo'].hasError('required')
+          "
+          class="error-text"
+        >
+          Please select a user to assign the task.
+        </small>
+      </div>
+
+      <!-- Estimated Time -->
+      <div class="form-group">
+        <label for="estimatedTime">Estimated Time (hours)</label>
+        <input
+          type="number"
+          id="estimatedTime"
+          formControlName="taskEstimatedTime"
+          min="1"
+          required
+        />
+        <small
+          *ngIf="
+            addTaskForm.controls['taskEstimatedTime'].touched &&
+            addTaskForm.controls['taskEstimatedTime'].hasError('required')
+          "
+          class="error-text"
+        >
+          Estimated time is required.
+        </small>
+      </div>
+
+      <!-- Due Date -->
+      <div class="form-group">
+        <label for="dueDate">Due Date</label>
+        <input
+          type="date"
+          id="dueDate"
+          formControlName="taskDueDate"
+          required
+        />
+        <small
+          *ngIf="
+            addTaskForm.controls['taskDueDate'].touched &&
+            addTaskForm.controls['taskDueDate'].hasError('required')
+          "
+          class="error-text"
+        >
+          Please select a due date.
+        </small>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn" (click)="onTaskSubmit()">
+        Add Task
+      </button>
+    </form>
   </div>
-  
+</div>

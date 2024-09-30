@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AdminService } from '../../../core/services/common services/admin.service';
+import { TodoService } from '../../../core/services/API services/todo.service';
 import { ToastService } from '../../../core/services/common services/toast.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private adminService: AdminService,
+    private todoServices: TodoService,
     private toastService: ToastService
   ) {}
 
@@ -31,12 +31,12 @@ export class LoginComponent {
       return;
     }
 
-    this.adminService.adminLogin(this.loginObj).subscribe({
+    this.todoServices.adminLogin(this.loginObj).subscribe({
       next: (res: any) => {
         debugger;
         if (res.token) {
           localStorage.setItem('adminToken', res.token);
-          this.toastService.showSuccess("Welcome Back");
+          this.toastService.showSuccess('Welcome Back');
           this.router.navigate(['dashboard']);
         } else {
           alert('Invalid Credentials');

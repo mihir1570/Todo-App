@@ -20,37 +20,26 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><p>Start Our Meeting</p></td>
-            <td>2 hrs</td>
-            <td><p>John Doe</p></td>
-            <td>14-08-2023</td>
+          <!-- Dynamically display tasks from the allTaskList array -->
+          <tr *ngFor="let task of allTaskList">
             <td>
-              <button class="action-btn duplicate"><i class="bx bx-copy"></i></button>
-              <button class="action-btn edit"><i class="bx bx-edit"></i></button>
-              <button class="action-btn delete"><i class="bx bx-trash"></i></button>
+              <p>{{ task.taskName }}</p>
             </td>
-          </tr>
-          <tr>
-            <td><p>Analyse Our Site</p></td>
-            <td>3 hrs</td>
-            <td><p>Jane Smith</p></td>
-            <td>15-08-2023</td>
+            <td>{{ task.taskEstimatedTime }} hrs</td>
             <td>
-              <button class="action-btn duplicate"><i class="bx bx-copy"></i></button>
-              <button class="action-btn edit"><i class="bx bx-edit"></i></button>
-              <button class="action-btn delete"><i class="bx bx-trash"></i></button>
+              <p>{{ task.taskAssignedTo }}</p>
             </td>
-          </tr>
-          <tr>
-            <td><p>Play Football</p></td>
-            <td>1 hr</td>
-            <td><p>Alex Johnson</p></td>
-            <td>16-08-2023</td>
+            <td>{{ task.dueDate | date : "dd-MM-yyyy" }}</td>
             <td>
-              <button class="action-btn duplicate"><i class="bx bx-copy"></i></button>
-              <button class="action-btn edit"><i class="bx bx-edit"></i></button>
-              <button class="action-btn delete"><i class="bx bx-trash"></i></button>
+              <button class="action-btn duplicate">
+                <i class="bx bx-copy"></i>
+              </button>
+              <button class="action-btn edit" (click)="addTaskClicked.emit()">
+                <i class="bx bx-edit"></i>
+              </button>
+              <button class="action-btn delete">
+                <i class="bx bx-trash"></i>
+              </button>
             </td>
           </tr>
         </tbody>
