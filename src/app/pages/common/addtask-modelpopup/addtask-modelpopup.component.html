@@ -1,10 +1,10 @@
 <div class="modal-overlay" (click)="close()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Add Task</h3>
+      <h3 class="modal-title">Add Task</h3>
       <button class="close-btn" (click)="close()">&times;</button>
     </div>
-    <form [formGroup]="addTaskForm">
+    <form [formGroup]="addTaskForm" (ngSubmit)="onTaskSubmit()">
       <!-- Task Title -->
       <div class="form-group">
         <label for="taskTitle">Task Title</label>
@@ -13,24 +13,25 @@
           id="taskTitle"
           formControlName="taskTitle"
           required
+          class="input-field"
         />
         <div
           *ngIf="
             addTaskForm.controls['taskTitle'].touched &&
-            addTaskForm.controls['taskTitle'].hasError('required')
+            addTaskForm.controls['taskTitle'].invalid
           "
           class="error-text"
         >
-          Task title is required.
-        </div>
-        <div
-          *ngIf="
-            addTaskForm.controls['taskTitle'].touched &&
-            addTaskForm.controls['taskTitle'].hasError('minlength')
-          "
-          class="error-text"
-        >
-          Task title must be at least 3 characters long.
+          <ng-container
+            *ngIf="addTaskForm.controls['taskTitle'].hasError('required')"
+          >
+            Task title is required.
+          </ng-container>
+          <ng-container
+            *ngIf="addTaskForm.controls['taskTitle'].hasError('minlength')"
+          >
+            Task title must be at least 3 characters long.
+          </ng-container>
         </div>
       </div>
 
@@ -42,34 +43,63 @@
           formControlName="taskDescription"
           maxlength="250"
           required
+          class="input-field"
         ></textarea>
         <small
           *ngIf="
             addTaskForm.controls['taskDescription'].touched &&
-            addTaskForm.controls['taskDescription'].hasError('required')
+            addTaskForm.controls['taskDescription'].invalid
           "
           class="error-text"
         >
-          Description is required.
-        </small>
-        <small
-          *ngIf="
-            addTaskForm.controls['taskDescription'].touched &&
-            addTaskForm.controls['taskDescription'].hasError('maxlength')
-          "
-          class="error-text"
-        >
-          Description cannot be more than 250 characters.
+          <ng-container
+            *ngIf="addTaskForm.controls['taskDescription'].hasError('required')"
+          >
+            Description is required.
+          </ng-container>
+          <ng-container
+            *ngIf="
+              addTaskForm.controls['taskDescription'].hasError('maxlength')
+            "
+          >
+            Description cannot be more than 250 characters.
+          </ng-container>
         </small>
       </div>
 
       <!-- Assign To -->
-      <div class="form-group">
-        <label for="assignedTo">Assign To</label>
-        <select id="assignedTo" formControlName="taskAssignedTo" required>
-          <option value="" disabled selected>Select a user</option>
-          <option *ngFor="let user of users" [value]="user">{{ user }}</option>
-        </select>
+      <div class="form-group danger">
+        <label for="assignedTo">Assign Task</label>
+        <div class="dropdown-container">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Select a user..."
+            (click)="toggleDropdown()"
+            readonly
+            [value]="
+              addTaskForm.controls['taskAssignedTo'].value || 'Select a user'
+            "
+            class="dropdown-input"
+          />
+          <div class="dropdown-content" [ngClass]="{ show: isDropdownOpen }">
+            <input
+              type="text"
+              id="dropdownSearch"
+              placeholder="Search users..."
+              (input)="filterUsers($event)"
+              class="dropdown-search-input"
+            />
+            <div class="dropdown-divider"></div>
+            <div
+              *ngFor="let user of filteredUsers"
+              (click)="selectUser(user)"
+              class="dropdown-option"
+            >
+              {{ user }}
+            </div>
+          </div>
+        </div>
         <small
           *ngIf="
             addTaskForm.controls['taskAssignedTo'].touched &&
@@ -90,6 +120,7 @@
           formControlName="taskEstimatedTime"
           min="1"
           required
+          class="input-field"
         />
         <small
           *ngIf="
@@ -110,6 +141,7 @@
           id="dueDate"
           formControlName="taskDueDate"
           required
+          class="input-field"
         />
         <small
           *ngIf="
@@ -123,9 +155,7 @@
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="submit-btn" (click)="onTaskSubmit()">
-        Add Task
-      </button>
+      <button type="submit" class="submit-btn">Add Task</button>
     </form>
   </div>
 </div>

@@ -32,6 +32,11 @@
     padding-bottom: 10px;
 }
 
+.modal-title {
+    font-size: 24px;
+    color: #333;
+}
+
 .close-btn {
     background: transparent;
     border: none;
@@ -50,21 +55,16 @@ label {
     font-weight: 500;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="date"],
-textarea,
-select {
+.input-field {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
     transition: border-color 0.3s;
+    font-size: 16px;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+.input-field:focus {
     border-color: #007bff;
     outline: none;
 }
@@ -75,7 +75,7 @@ textarea {
 }
 
 .submit-btn {
-    padding: 10px;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -92,32 +92,84 @@ textarea {
     transform: translateY(-2px);
 }
 
-/* Ensure higher specificity for error text */
 .error-text {
-    color: red !important; /* Force red color for error messages */
+    color: red !important;
     font-size: 12px;
     margin-top: 5px;
+}
+
+.input-field.ng-invalid.ng-touched {
+    border-color: red !important;
+}
+
+.dropdown-container {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.dropdown-input:focus {
+    border-color: #007bff;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 240px;
+    overflow-y: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-top: 8px;
+    z-index: 1;
+}
+
+.dropdown-content.show {
     display: block;
 }
 
-/* Make sure input, textarea, and select fields show red border on error */
-input.ng-invalid.ng-touched,
-textarea.ng-invalid.ng-touched,
-select.ng-invalid.ng-touched {
-    border-color: red !important; /* Ensure invalid fields show red borders */
+.dropdown-search-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 16px;
 }
 
-/* Adjust form-group margin in case of overlap with error messages */
-.form-group {
-    margin-bottom: 20px;
-    position: relative;
+.dropdown-search-input:focus {
+    border-color: #007bff;
 }
 
-/* Optional: Space between input and error message */
-input,
-textarea,
-select {
-    margin-bottom: 5px;
+.dropdown-option {
+    padding: 12px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-option:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-divider {
+    border-top: 1px solid #f0f0f0;
+    margin: 5px 0;
 }
 
 @keyframes fadeIn {

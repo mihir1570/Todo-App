@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TodoService } from '../../../core/services/API services/todo.service';
 import { ToastService } from '../../../core/services/common services/toast.service';
+import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from '../../../core/services/common services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -19,10 +21,13 @@ export class LoginComponent {
     password: '',
   };
 
+  cookiesService = inject(CookieService);
+
   constructor(
     private router: Router,
     private todoServices: TodoService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private loginService: LoginService
   ) {}
 
   onLogin() {
@@ -35,7 +40,7 @@ export class LoginComponent {
       next: (res: any) => {
         debugger;
         if (res.token) {
-          localStorage.setItem('adminToken', res.token);
+          this.loginService.setCookie('cookiesAdmin', res.token, 3, 'hours'); // For 30 seconds/minutes/hours
           this.toastService.showSuccess('Welcome Back');
           this.router.navigate(['dashboard']);
         } else {

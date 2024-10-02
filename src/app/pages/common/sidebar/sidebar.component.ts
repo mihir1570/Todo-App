@@ -1,10 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  input,
-  output,
-} from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../../core/services/common services/login.service';
@@ -19,10 +14,7 @@ import { LoginService } from '../../../core/services/common services/login.servi
 export class SidebarComponent {
   isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
-  constructor(
-    private router: Router,
-    private loginService: LoginService,
-  ) {}
+  constructor(private router: Router, private loginService: LoginService) {}
 
   items = [
     {
@@ -59,9 +51,4 @@ export class SidebarComponent {
     this.loginService.logout();
     this.router.navigate(['login']);
   }
-
-  // onLogout() {
-  //   localStorage.removeItem('adminToken');
-  //   this.router.navigate(['login']);
-  // }
 }

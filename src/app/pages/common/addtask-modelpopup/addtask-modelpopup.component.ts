@@ -1,5 +1,5 @@
 import { CommonModule, JsonPipe } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -15,18 +15,16 @@ import { TodoService } from '../../../core/services/API services/todo.service';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, JsonPipe],
   templateUrl: './addtask-modelpopup.component.html',
-  styleUrl: './addtask-modelpopup.component.css',
+  styleUrls: ['./addtask-modelpopup.component.css'],
 })
 export class AddtaskModelpopupComponent {
   @Output() closePopup = new EventEmitter<void>();
 
-  constructor(
-    private toastService: ToastService,
-    private todoService: TodoService
-  ) {}
-
   users = ['John Doe', 'Jane Smith', 'Alex Johnson', 'Assign to me'];
+  filteredUsers = [...this.users]; // Create a copy for filtering
   taskFormValue: any;
+  isDropdownOpen = false; // Track dropdown open state
+
   addTaskForm: FormGroup = new FormGroup({
     taskTitle: new FormControl('', [
       Validators.required,
@@ -42,6 +40,11 @@ export class AddtaskModelpopupComponent {
     taskDueDate: new FormControl('', [Validators.required]),
   });
 
+  constructor(
+    private toastService: ToastService,
+    private todoService: TodoService
+  ) {}
+
   // Handle form submission
   onTaskSubmit() {
     if (this.addTaskForm.valid) {
@@ -49,10 +52,9 @@ export class AddtaskModelpopupComponent {
       this.todoService
         .addTask(this.taskFormValue)
         .subscribe((response: any) => {
-          debugger;
           if (response.result) {
             this.toastService.showSuccess('Task added successfully');
-            console.log(response);
+            this.close();
           } else {
             this.toastService.showError('Error adding task');
           }
@@ -62,8 +64,39 @@ export class AddtaskModelpopupComponent {
       this.addTaskForm.markAllAsTouched();
     }
   }
+
+  // Filter users based on the search input
+  filterUsers(event: Event) {
+    const searchValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.filteredUsers = this.users.filter((user) =>
+      user.toLowerCase().includes(searchValue)
+    );
+  }
+
+  // Select a user from the dropdown
+  selectUser(user: string) {
+    this.addTaskForm.controls['taskAssignedTo'].setValue(user);
+    this.isDropdownOpen = false; // Close the dropdown after selection
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.dropdown-container')) {
+      this.isDropdownOpen = false;
+    }
+  }
+
   // Close modal
   close() {
     this.closePopup.emit();
+  }
+
+  openCalendar() {
+    // This method can be customized to handle extra functionalities if you're using a custom date picker
   }
 }
