@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../../core/services/common services/login.service';
+import { AuthService } from '../../../core/services/common services/auth.service';
+import { User } from '../../../core/models/interface/user';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,10 +13,20 @@ import { LoginService } from '../../../core/services/common services/login.servi
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
-  constructor(private router: Router, private loginService: LoginService) {}
+  user: User | null = null;
+
+  constructor(
+    private router: Router,
+    private loginService: LoginService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.user = this.authService.getUserData();
+  }
 
   items = [
     {

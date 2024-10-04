@@ -12,16 +12,20 @@
       name="email"
       [(ngModel)]="loginObj.email"
       placeholder="Your email"
+      autocomplete="email"
       required
     />
     <input
       type="password"
       name="password"
-      [(ngModel)]="loginObj.password"
       placeholder="Password"
       minlength="6"
       required
+      autocomplete="current-password"
+      [(ngModel)]="loginObj.password"
+      class="ng-dirty ng-valid ng-touched"
     />
+
     <p>Password must be at least 6 characters</p>
 
     <button type="submit" (click)="onLogin()">Sign in</button>

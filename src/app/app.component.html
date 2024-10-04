@@ -1,11 +1,13 @@
 <!-- Show Sidebar and Main Component only if the user is logged in and NOT on the login page -->
 <ng-container *ngIf="isLoggedIn() && !isLoginPage(); else showRouterOutlet">
   <app-sidebar
+    class="app-sidebar"
     [isLeftSidebarCollapsed]="isLeftSidebarCollapsedValue"
     (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"
   ></app-sidebar>
 
   <app-main
+    class="app-main"
     [isLeftSidebarCollapsed]="isLeftSidebarCollapsedValue"
     [screenWidth]="screenWidthValue"
   ></app-main>

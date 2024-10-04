@@ -5,6 +5,9 @@ import { TodoService } from '../../../core/services/API services/todo.service';
 import { ToastService } from '../../../core/services/common services/toast.service';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from '../../../core/services/common services/login.service';
+import { LoginObj } from '../../../core/models/class/task';
+import { User } from '../../../core/models/interface/user';
+import { AuthService } from '../../../core/services/common services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +17,9 @@ import { LoginService } from '../../../core/services/common services/login.servi
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  adminData: any[] = [];
+  userData: User[] = [];
 
-  loginObj: any = {
-    email: '',
-    password: '',
-  };
+  loginObj: LoginObj = new LoginObj();
 
   cookiesService = inject(CookieService);
 
@@ -27,7 +27,8 @@ export class LoginComponent {
     private router: Router,
     private todoServices: TodoService,
     private toastService: ToastService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private authService: AuthService
   ) {}
 
   onLogin() {
@@ -40,7 +41,10 @@ export class LoginComponent {
       next: (res: any) => {
         debugger;
         if (res.token) {
-          this.loginService.setCookie('cookiesAdmin', res.token, 3, 'hours'); // For 30 seconds/minutes/hours
+          this.userData = res;
+          this.authService.setUserData(res.user);
+          console.log(res);
+          this.loginService.setCookie('cookiesAdmin', res.token, 24, 'hours'); // For 30 seconds/minutes/hours
           this.toastService.showSuccess('Welcome Back');
           this.router.navigate(['dashboard']);
         } else {

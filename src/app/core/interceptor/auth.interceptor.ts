@@ -39,6 +39,7 @@ export const authInterceptor: HttpInterceptorFn = (
   const token = cookieService.get('cookiesAdmin');
 
   if (token) {
+    debugger;
     const clonedReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,

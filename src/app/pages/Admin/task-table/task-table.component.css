@@ -11,7 +11,9 @@ body {
     background-color: var(--light); /* Default light mode background */
     color: var(--grey); /* Default text color */
     border-radius: 8px;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
 }
 
 .header {
@@ -19,7 +21,6 @@ body {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
-
 }
 
 .header i {
@@ -43,11 +44,14 @@ table {
     white-space: nowrap; /* Prevents table from breaking on small screens */
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
 }
 
 th {
@@ -87,36 +91,36 @@ td img {
 }
 
 .action-btn.duplicate {
-    color: #2196F3; /* Blue */
+    color: #2196f3; /* Blue */
 }
 
 .action-btn.edit {
-    color: #FFC107; /* Amber */
+    color: #ffc107; /* Amber */
 }
 
 .action-btn.delete {
-    color: #F44336; /* Red */
+    color: #f44336; /* Red */
 }
 
 /* Dark Mode Styles */
 body.dark .bottom-data {
     background-color: var(--dark); /* Dark mode background */
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 body.dark .header i,
 body.dark h3 {
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 body.dark th {
-    background-color: var(--grey); 
-    color: #ffffff; 
+    background-color: var(--grey);
+    color: #ffffff;
 }
 
 body.dark td {
     background-color: var(--grey);
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 /* Responsive Styles */
@@ -143,7 +147,73 @@ body.dark td {
         white-space: nowrap;
     }
 
-    th, td {
-        text-align: left; 
+    th,
+    td {
+        text-align: left;
     }
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+}
+
+.modal.show {
+    display: flex; /* Use flex to center the modal */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.modal-content {
+    background-color: #ffffff; /* White background */
+    margin: auto; /* Centering */
+    padding: 20px; /* Space inside the modal */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    width: 90%; /* Full width on small screens */
+    max-width: 500px; /* Max width for larger screens */
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease; /* Smooth transition */
+    transform: translateY(-50px); /* Initial position for animation */
+    opacity: 0; /* Start invisible */
+}
+
+.modal.show .modal-content {
+    transform: translateY(0); /* Bring it into view */
+    opacity: 1; /* Fade in */
+}
+
+.close {
+    color: #ff5722; /* Material orange color */
+    float: right; /* Right align */
+    font-size: 24px; /* Larger font */
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.close:hover,
+.close:focus {
+    color: #e64a19; /* Darker shade on hover */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+h3 {
+    margin-top: 0; /* Remove top margin */
+    font-size: 1.5rem; /* Slightly larger font size */
+    color: #333; /* Darker color for contrast */
+}
+
+p {
+    margin: 0.5rem 0; /* Spacing between paragraphs */
+    color: #666; /* Lighter color for text */
 }

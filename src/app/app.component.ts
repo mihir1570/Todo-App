@@ -4,8 +4,9 @@ import { LoginService } from './core/services/common services/login.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { MainComponent } from "./pages/main/main/main.component";
-import { SidebarComponent } from "./pages/common/sidebar/sidebar.component";
+import { MainComponent } from './pages/main/main/main.component';
+import { SidebarComponent } from './pages/common/sidebar/sidebar.component';
+import { AddtaskModelpopupComponent } from './pages/common/addtask-modelpopup/addtask-modelpopup.component';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +16,19 @@ import { SidebarComponent } from "./pages/common/sidebar/sidebar.component";
     NgxSpinnerComponent,
     RouterOutlet,
     MainComponent,
-    SidebarComponent
-],
+    SidebarComponent,
+    AddtaskModelpopupComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  triggerError() {
+    throw new Error('Method not implemented.');
+  }
+  triggerSuccess() {
+    throw new Error('Method not implemented.');
+  }
   isLeftSidebarCollapsed = signal<boolean>(false);
   screenWidth = signal<number>(window.innerWidth);
 

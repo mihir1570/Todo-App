@@ -11,29 +11,32 @@
       <i class="fa-solid fa-bars"></i>
     </button>
     @if (!isLeftSidebarCollapsed()) {
-      <div class="logo-text">Mihir Patel</div>
-      <button class="btn-close" (click)="closeSidenav()">
-        <i class="fal fa-times close-icon"></i>
-      </button>
+    <div class="logo-text" *ngIf="user; else noUser">{{ user.name }}</div>
+    <ng-template #noUser
+      ><p class="logo-text">No user is logged in.</p></ng-template
+    >
+    <button class="btn-close" (click)="closeSidenav()">
+      <i class="fal fa-times close-icon"></i>
+    </button>
     }
   </div>
 
   <!-- Navigation items -->
   <div class="sidenav-nav">
     @for (item of items; track $index) {
-      <li class="sidenav-nav-item">
-        <a
-          class="sidenav-nav-link"
-          [routerLink]="item.routeLink"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <i class="sidenav-link-icon" [class]="item.icon"></i>
-          @if (!isLeftSidebarCollapsed()) {
-            <span class="sidenav-link-text">{{ item.label }}</span>
-          }
-        </a>
-      </li>
+    <li class="sidenav-nav-item">
+      <a
+        class="sidenav-nav-link"
+        [routerLink]="item.routeLink"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="sidenav-link-icon" [class]="item.icon"></i>
+        @if (!isLeftSidebarCollapsed()) {
+        <span class="sidenav-link-text">{{ item.label }}</span>
+        }
+      </a>
+    </li>
     }
   </div>
 
@@ -42,7 +45,7 @@
     <button class="sidenav-logout" (click)="logout()">
       <i class="fal fa-sign-out sidenav-logout-icon"></i>
       @if (!isLeftSidebarCollapsed()) {
-        <span class="sidenav-logout-text">Logout</span>
+      <span class="sidenav-logout-text">Logout</span>
       }
     </button>
   </div>

@@ -31,11 +31,11 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
-              "node_modules/ngx-spinner/animations/ball-spin.css"
+              "node_modules/ngx-spinner/animations/ball-spin.css",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
-            "scripts": [
-              "node_modules/@popperjs/core/dist/umd/popper.min.js"
-            ]
+            "scripts": ["node_modules/@popperjs/core/dist/umd/popper.min.js"]
           },
           "configurations": {
             "production": {

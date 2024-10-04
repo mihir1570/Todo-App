@@ -6,7 +6,6 @@
     margin-top: 36px;
 }
 
-/* Card Styles */
 .content main .insights li {
     padding: 24px;
     background: var(--light);
@@ -15,16 +14,16 @@
     align-items: center;
     grid-gap: 24px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-/* Hover Effect on Cards */
 .content main .insights li:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Icon Styles */
 .content main .insights li .bx {
     width: 80px;
     height: 80px;
@@ -33,16 +32,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-/* Hover Effect on Icons */
 .content main .insights li:hover .bx {
     transform: rotate(10deg);
     box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Insights Text Styling */
 .content main .insights li .info h3 {
     font-size: 24px;
     font-weight: 600;
@@ -54,38 +54,35 @@
     color: var(--dark);
 }
 
-/* Add hover effects for smoother color transitions */
 .content main .insights li:hover .info h3 {
     color: var(--primary);
 }
 
-/* Individual Card Colors */
 .content main .insights li:nth-child(1) .bx {
-    background: var(--light-task); /* Task-specific color */
+    background: var(--light-task);
     color: var(--task);
 }
 
 .content main .insights li:nth-child(2) .bx {
-    background: var(--light-warning); /* Today's tasks */
+    background: var(--light-warning);
     color: var(--warning);
 }
 
 .content main .insights li:nth-child(3) .bx {
-    background: var(--light-danger); /* Overdue tasks */
+    background: var(--light-danger);
     color: var(--danger);
 }
 
 .content main .insights li:nth-child(4) .bx {
-    background: var(--light-success); /* Completed tasks */
+    background: var(--light-success);
     color: var(--success);
 }
 
 .content main .insights li:nth-child(5) .bx {
-    background: var(--light-created); /* Tasks created by you */
+    background: var(--light-created);
     color: var(--info);
 }
 
-/* Hover-specific text color change for each card */
 .content main .insights li:nth-child(1):hover .info h3 {
     color: var(--task);
 }
@@ -105,4 +102,3 @@
 .content main .insights li:nth-child(5):hover .info h3 {
     color: var(--info);
 }
-

@@ -6,7 +6,6 @@ import { TaskTableComponent } from '../task-table/task-table.component';
 import { AddtaskModelpopupComponent } from '../../common/addtask-modelpopup/addtask-modelpopup.component';
 import { RouterOutlet } from '@angular/router';
 
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -16,7 +15,7 @@ import { RouterOutlet } from '@angular/router';
     NavbarComponent,
     TaskTableComponent,
     AddtaskModelpopupComponent,
-    RouterOutlet 
+    RouterOutlet,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',

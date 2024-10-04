@@ -1,4 +1,4 @@
-<div class="bottom-data">
+<!-- <div class="bottom-data">
   <div class="tasks">
     <div class="header">
       <i class="bx bx-task"></i>
@@ -6,8 +6,6 @@
       <i class="bx bx-filter"></i>
       <i class="bx bx-plus" (click)="addTaskClicked.emit()"></i>
     </div>
-
-    <!-- Table Wrapper to enable scrolling for the table content -->
     <div class="table-wrapper">
       <table>
         <thead>
@@ -20,7 +18,6 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Dynamically display tasks from the allTaskList array -->
           <tr *ngFor="let task of allTaskList">
             <td>
               <p>{{ task.taskName }}</p>
@@ -44,6 +41,99 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div> -->
+
+<div class="bottom-data">
+  <div class="tasks">
+    <div class="header">
+      <i class="bx bx-task"></i>
+      <h3>Task List</h3>
+      <i class="bx bx-filter"></i>
+      <i class="bx bx-plus" (click)="addTaskClicked.emit()"></i>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Estimated Hours</th>
+            <th>Assigned To</th>
+            <th>Due On</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of allTaskList">
+            <td>
+              <p>{{ task.taskName }}</p>
+            </td>
+            <td>{{ task.taskEstimatedTime }} hrs</td>
+            <td>
+              <p>{{ task.taskAssignedTo }}</p>
+            </td>
+            <td>{{ task.dueDate | date : "dd-MM-yyyy" }}</td>
+            <td>
+              <select
+                [(ngModel)]="task.status"
+                (change)="updateTaskStatus(task)"
+              >
+                <option value="PENDING" [selected]="task.status === 'PENDING'">
+                  Pending
+                </option>
+                <option
+                  value="IN_PROGRESS"
+                  [selected]="task.status === 'IN_PROGRESS'"
+                >
+                  In Progress
+                </option>
+                <option
+                  value="COMPLETED"
+                  [selected]="task.status === 'COMPLETED'"
+                >
+                  Completed
+                </option>
+              </select>
+            </td>
+            <td>
+              <button class="action-btn duplicate">
+                <i class="bx bx-copy"></i>
+              </button>
+              <button class="action-btn edit" (click)="addTaskClicked.emit()">
+                <i class="bx bx-edit"></i>
+              </button>
+              <button class="action-btn delete">
+                <i class="bx bx-trash"></i>
+              </button>
+              <button class="action-btn more-info" (click)="openModal(task)">
+                <i class="bx bx-info-circle"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal for More Info -->
+    <div class="modal" [class.show]="isModalOpen" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h3>Task Details</h3>
+        <p><strong>Task Name:</strong> {{ selectedTask?.taskName }}</p>
+        <p>
+          <strong>Estimated Hours:</strong>
+          {{ selectedTask?.taskEstimatedTime }} hrs
+        </p>
+        <p><strong>Assigned To:</strong> {{ selectedTask?.taskAssignedTo }}</p>
+        <p>
+          <strong>Due On:</strong>
+          {{ selectedTask?.dueDate | date : "dd-MM-yyyy" }}
+        </p>
+        <p><strong>Status:</strong> {{ selectedTask?.status }}</p>
+      </div>
     </div>
   </div>
 </div>

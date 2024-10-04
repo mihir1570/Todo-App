@@ -10,7 +10,7 @@
     align-items: center;
     opacity: 0;
     animation: fadeIn 0.3s forwards;
-    z-index: 1000;
+    z-index: 999;
 }
 
 .modal-content {
