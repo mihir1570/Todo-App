@@ -192,7 +192,7 @@ body {
     transition: all 0.3s ease;
 }
 
-.sidebar.close ~ .content {
+.sidebar.close~.content {
     width: calc(100% - 60px);
     left: 60px;
 }
@@ -207,7 +207,7 @@ body {
     position: sticky;
     top: 0;
     left: 0;
-    /* z-index: 1000; */
+    z-index: 499;
 }
 
 .content nav::before {
@@ -320,7 +320,7 @@ body {
     transition: all 0.3s ease;
 }
 
-.content nav #theme-toggle:checked + .theme-toggle::before {
+.content nav #theme-toggle:checked+.theme-toggle::before {
     left: calc(100% - (25px - 4px) - 2px);
 }
 
@@ -557,8 +557,8 @@ body {
         border-radius: 0 36px 36px 0;
     }
 
-    .content nav form.show ~ .notif,
-    .content nav form.show ~ .profile {
+    .content nav form.show~.notif,
+    .content nav form.show~.profile {
         display: none;
     }
 
@@ -576,5 +576,10 @@ body {
 
     .content main .bottom-data .reminders .task-list {
         min-width: 340px;
+    }
+
+    ol,
+    ul {
+        padding-left: 0;
     }
 }

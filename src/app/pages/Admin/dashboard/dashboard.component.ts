@@ -30,4 +30,10 @@ export class DashboardComponent {
   closeModal() {
     this.isModalOpen = false;
   }
+
+  selectedCard: string | null = null;
+
+  selectCard(cardName: string): void {
+    this.selectedCard = cardName;
+  }
 }

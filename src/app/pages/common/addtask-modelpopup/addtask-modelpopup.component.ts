@@ -14,10 +14,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastService } from '../../../core/services/common services/toast.service';
-import { TodoService } from '../../../core/services/API services/todo.service';
 import { Task } from '../../../core/models/class/task';
-import { User } from '../../../core/models/interface/user';
 import { AuthService } from '../../../core/services/common services/auth.service';
+import { ApiService } from '../../../core/services/api services/todo.service';
 
 @Component({
   selector: 'app-addtask-modelpopup',
@@ -29,7 +28,9 @@ import { AuthService } from '../../../core/services/common services/auth.service
 export class AddtaskModelpopupComponent implements OnInit {
   @Output() closePopup = new EventEmitter<void>();
 
-  users: any[] = []; // Initialize empty array for users
+  // Static list of users
+  users = ['John Doe', 'Jane Smith', 'Alex Johnson', 'Assign to me'];
+
   filteredUsers: any[] = []; // For filtered user list
   isDropdownOpen = false; // Track dropdown open state
 
@@ -43,32 +44,21 @@ export class AddtaskModelpopupComponent implements OnInit {
       Validators.minLength(3),
       Validators.maxLength(250),
     ]),
-    taskAssignedTo: new FormControl(),
+    taskAssignedTo: new FormControl('', [Validators.required]), // Required to validate selection
     taskEstimatedTime: new FormControl('', [Validators.required]),
     taskDueDate: new FormControl('', [Validators.required]),
   });
 
   constructor(
     private toastService: ToastService,
-    private todoService: TodoService,
+    private apiService: ApiService,
     private authService: AuthService
   ) {}
 
   ngOnInit() {
-    // this.loadUsers();
+    // Initially, set filteredUsers to the full list of users
+    this.filteredUsers = this.users;
   }
-
-  // loadUsers() {
-  //   this.todoService.getAllUsers().subscribe(
-  //     (response) => {
-  //       this.users = response.data; // Adjust based on your API response structure
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching users:', error);
-  //       this.toastService.showError('Error fetching users');
-  //     }
-  //   );
-  // }
 
   // Function to handle task submission
   onTaskSubmit() {
@@ -83,8 +73,7 @@ export class AddtaskModelpopupComponent implements OnInit {
       // Assign the task details
       newTask.title = this.addTaskForm.controls['taskTitle'].value;
       newTask.description = this.addTaskForm.controls['taskDescription'].value;
-      newTask.assignedTo = this.addTaskForm.controls['taskAssignedTo'].value; // Use the assignedTo control value
-      newTask.assignedTo = 'fdd762ed-a026-4497-8952-8a6c22141651';
+      newTask.assignedTo = this.addTaskForm.controls['taskAssignedTo'].value;
       newTask.dueDate = new Date(
         this.addTaskForm.controls['taskDueDate'].value
       );
@@ -93,7 +82,7 @@ export class AddtaskModelpopupComponent implements OnInit {
       newTask.createdBy = currentUser.id;
 
       // Call the service to add the task
-      this.todoService.addTask(newTask).subscribe(
+      this.apiService.addTask(newTask).subscribe(
         (response) => {
           console.log('Task added successfully:', response);
           this.toastService.showSuccess('Task successfully added!');
@@ -114,15 +103,15 @@ export class AddtaskModelpopupComponent implements OnInit {
   filterUsers(event: Event) {
     const searchValue = (event.target as HTMLInputElement).value.toLowerCase();
     this.filteredUsers = this.users.filter((user) =>
-      user.name.toLowerCase().includes(searchValue)
+      user.toLowerCase().includes(searchValue)
     );
   }
 
   // Select a user from the dropdown
-  // selectUser(user: User) {
-  //   this.addTaskForm.controls['taskAssignedTo'].setValue(user.id);
-  //   this.isDropdownOpen = false; // Close the dropdown after selection
-  // }
+  selectUser(user: string) {
+    this.addTaskForm.controls['taskAssignedTo'].setValue(user); // Set selected user's name as value
+    this.isDropdownOpen = false; // Close the dropdown after selection
+  }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -141,3 +130,4 @@ export class AddtaskModelpopupComponent implements OnInit {
     this.closePopup.emit();
   }
 }
+

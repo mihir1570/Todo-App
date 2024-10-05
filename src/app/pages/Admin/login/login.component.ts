@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TodoService } from '../../../core/services/API services/todo.service';
 import { ToastService } from '../../../core/services/common services/toast.service';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from '../../../core/services/common services/login.service';
 import { LoginObj } from '../../../core/models/class/task';
 import { User } from '../../../core/models/interface/user';
 import { AuthService } from '../../../core/services/common services/auth.service';
+import { ApiService } from '../../../core/services/api services/todo.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private todoServices: TodoService,
+    private apiService: ApiService,
     private toastService: ToastService,
     private loginService: LoginService,
     private authService: AuthService
@@ -37,7 +37,7 @@ export class LoginComponent {
       return;
     }
 
-    this.todoServices.adminLogin(this.loginObj).subscribe({
+    this.apiService.adminLogin(this.loginObj).subscribe({
       next: (res: any) => {
         debugger;
         if (res.token) {

@@ -7,7 +7,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class TodoService {
+export class ApiService {
   constructor(private http: HttpClient) {}
 
   adminLogin(obj: any) {
