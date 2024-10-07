@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
+import { ApiService } from '../../../core/services/api services/todo.service';
 
 @Component({
   selector: 'app-task-table',
@@ -11,75 +13,35 @@ import { CommonModule, DatePipe } from '@angular/common';
 })
 export class TaskTableComponent implements OnInit {
   @Output() addTaskClicked = new EventEmitter<void>();
-
-  // List of tasks with random data
-  allTaskList = [
-    {
-      id: 1,
-      taskName: 'Design Homepage',
-      taskEstimatedTime: 4,
-      taskAssignedTo: 'Alice Johnson',
-      dueDate: new Date('2024-10-15'),
-      status: 'IN_PROGRESS',
-      description: 'Complete the design of the main homepage UI for the client.',
-    },
-    {
-      id: 2,
-      taskName: 'Fix Login Bugs',
-      taskEstimatedTime: 2,
-      taskAssignedTo: 'Bob Smith',
-      dueDate: new Date('2024-10-12'),
-      status: 'PENDING',
-      description: 'Resolve issues with user login, including error handling.',
-    },
-    {
-      id: 3,
-      taskName: 'Develop API for Dashboard',
-      taskEstimatedTime: 6,
-      taskAssignedTo: 'Carol White',
-      dueDate: new Date('2024-10-20'),
-      status: 'COMPLETED',
-      description: 'Build and integrate the API for the admin dashboard.',
-    },
-    {
-      id: 4,
-      taskName: 'Update User Profiles',
-      taskEstimatedTime: 3,
-      taskAssignedTo: 'David Brown',
-      dueDate: new Date('2024-10-18'),
-      status: 'IN_PROGRESS',
-      description: 'Enhance the user profile feature with new data fields.',
-    },
-    {
-      id: 5,
-      taskName: 'Test Payment Gateway',
-      taskEstimatedTime: 5,
-      taskAssignedTo: 'Eva Green',
-      dueDate: new Date('2024-10-22'),
-      status: 'PENDING',
-      description: 'Test the integration of the new payment gateway with the app.',
-    },
-    {
-      id: 6,
-      taskName: 'Create Analytics Report',
-      taskEstimatedTime: 8,
-      taskAssignedTo: 'Frank Blue',
-      dueDate: new Date('2024-10-25'),
-      status: 'PENDING',
-      description: 'Generate an analytics report for Q3 performance metrics.',
-    },
-  ];
-
+  
+  allTaskList: any[] = []; // Array to hold tasks fetched from the API
   currentPage = 1;
-  itemsPerPage = 3;  // Number of tasks per page
+  itemsPerPage = 3; // Number of tasks per page
   paginatedTasks: any[] = [];
   totalPages = 0;
 
   isModalOpen = false;
   selectedTask: any;
 
+  constructor(private apiService: ApiService) {} // Inject the ApiService
+
   ngOnInit(): void {
-    this.updatePaginatedTasks();
+    this.fetchTasks(); // Fetch tasks when the component initializes
+  }
+
+  fetchTasks() {
+    this.apiService.getAllTask().subscribe((response) => {
+      this.allTaskList = response.data.map((task: any) => ({
+        id: task.id,
+        taskName: task.title, // Renamed for consistency with your HTML
+        taskEstimatedTime: task.estimatedHours,
+        taskAssignedTo: task.createdBy.name, // Assuming you want the creator's name as assigned to
+        dueDate: new Date(task.dueDate),
+        status: task.status,
+        description: task.description,
+      }));
+      this.updatePaginatedTasks(); // Update the pagination after fetching tasks
+    });
   }
 
   updateTaskStatus(task: any) {

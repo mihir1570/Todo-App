@@ -78,8 +78,7 @@
             (click)="toggleDropdown()"
             readonly
             [value]="
-              addTaskForm.controls['taskAssignedTo'].value || 'Select a user'
-            "
+              selectedUserName || 'Select a user'"
             class="dropdown-input"
           />
           <div class="dropdown-content" [ngClass]="{ show: isDropdownOpen }">
@@ -96,7 +95,7 @@
               (click)="selectUser(user)"
               class="dropdown-option"
             >
-              {{ user }}
+              {{ user.name }}
             </div>
           </div>
         </div>
@@ -110,6 +109,7 @@
           Please select a user to assign the task.
         </small>
       </div>
+      
 
       <!-- Estimated Time -->
       <div class="form-group">

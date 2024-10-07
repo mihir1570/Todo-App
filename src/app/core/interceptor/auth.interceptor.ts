@@ -38,17 +38,17 @@ export const authInterceptor: HttpInterceptorFn = (
 
   const token = cookieService.get('cookiesAdmin');
 
-  // if (token) {
-  //   debugger;
-  //   const clonedReq = req.clone({
-  //     setHeaders: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-  //   return next(clonedReq);
-  // } else {
-  //   router.navigate(['/login']);
-  // }
+  if (token) {
+    debugger;
+    const clonedReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return next(clonedReq);
+  } else {
+    router.navigate(['/login']);
+  }
 
   return next(req);
 

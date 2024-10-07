@@ -21,19 +21,39 @@ export class ApiService {
   addTask(addTaskObj: Task): Observable<any> {
     debugger;
     return this.http.post(
-      `${Constant.TODO_APP}${Constant.TODO_METHODS.addTask}`,
+      `${Constant.ADMIN_AUTHENTICATION}${Constant.ADMIN_AUTH.ADD_TASK}`,
       addTaskObj
     );
   }
 
   getAllUsers(): Observable<any> {
+    debugger;
     return this.http.get(
-      `https://2563-110-227-199-245.ngrok-free.app/api/users`
+      `${Constant.ADMIN_AUTHENTICATION}${Constant.ADMIN_AUTH.GET_ALL_USER}`
     );
   }
 
   getAllTask(): Observable<any> {
     debugger;
-    return this.http.get(`http://192.168.29.138:3000/api/task`);
+    return this.http.get(
+      `${Constant.ADMIN_AUTHENTICATION}${Constant.ADMIN_AUTH.GET_ALL_TASK}`
+    );
   }
+
+  updateTask(taskId: string, taskData: Task) {
+    debugger;
+    return this.http.put(
+      `${Constant.ADMIN_AUTHENTICATION}${Constant.ADMIN_AUTH.UPDATE_TASK}${taskId}`,
+      taskData
+    );
+  }
+
+  deleteTask(taskId: string) {
+    debugger;
+    return this.http.delete(
+      `${Constant.ADMIN_AUTHENTICATION}${Constant.ADMIN_AUTH.DELETE_TASK}${taskId}`
+    )
+  }
+
+
 }
