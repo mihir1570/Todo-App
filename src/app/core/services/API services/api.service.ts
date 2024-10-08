@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/constant';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Task } from '../../models/class/task';
 import { Observable } from 'rxjs';
 
@@ -12,7 +12,6 @@ export class ApiService {
 
   // User Authentication Services
   adminLogin(obj: any) {
-    debugger;
     return this.http.post(
       `${Constant.BASE_URL}${Constant.USER_AUTH.LOGIN}`,
       obj
@@ -20,7 +19,6 @@ export class ApiService {
   }
 
   getAllUsers(): Observable<any> {
-    debugger;
     return this.http.get(
       `${Constant.BASE_URL}${Constant.USER_AUTH.GET_ALL_USERS}`
     );
@@ -29,22 +27,13 @@ export class ApiService {
   // ================ // ALL TASK // =================== //
 
   addTask(addTaskObj: Task): Observable<any> {
-    debugger;
     return this.http.post(
       `${Constant.BASE_URL}${Constant.TASK_API.ADD_TASK}`,
       addTaskObj
     );
   }
 
-  getAllTask(): Observable<any> {
-    debugger;
-    return this.http.get(
-      `${Constant.BASE_URL}${Constant.TASK_API.GET_ALL_TASKS}`
-    );
-  }
-
   updateTask(taskId: string, taskData: Task) {
-    debugger;
     return this.http.put(
       `${Constant.BASE_URL}${Constant.TASK_API.UPDATE_TASK}/${taskId}`,
       taskData
@@ -52,16 +41,60 @@ export class ApiService {
   }
 
   deleteTask(taskId: string) {
-    debugger;
     return this.http.delete(
       `${Constant.BASE_URL}${Constant.TASK_API.DELETE_TASK}/${taskId}`
     );
   }
 
+  // ======================================== //
   assignMe(userId: string) {
-    debugger;
     return this.http.get(
-      `${Constant.BASE_URL}${Constant.TASK_API.ASSIGN_ME}/${userId}`
+      `${Constant.BASE_URL}${Constant.TASK_API.TASK_DETAIL}/${userId}`
+    );
+  }
+
+  todayTask() {
+    let params = new HttpParams();
+    params = params.set('TodayTask', 'true');
+    return this.http.get(
+      `${Constant.BASE_URL}${Constant.TASK_API.TASK_DETAIL}`,
+      {
+        params,
+      }
+    );
+  }
+
+  taskCreatedByMe(userId: string) {
+    let params = new HttpParams();
+    params = params.set('TaskCreatedBy', userId);
+    return this.http.get(
+      `${Constant.BASE_URL}${Constant.TASK_API.TASK_DETAIL}`,
+      {
+        params,
+      }
+    );
+  }
+
+  overDueTask() {
+    let params = new HttpParams();
+    params = params.set('TaskOverDue', 'true');
+    return this.http.get(
+      `${Constant.BASE_URL}${Constant.TASK_API.TASK_DETAIL}`,
+      {
+        params,
+      }
+    );
+  }
+
+  taskCompleted() {
+    debugger;
+    let params = new HttpParams();
+    params = params.set('TaskCompleted', 'true');
+    return this.http.get(
+      `${Constant.BASE_URL}${Constant.TASK_API.TASK_DETAIL}`,
+      {
+        params,
+      }
     );
   }
 }

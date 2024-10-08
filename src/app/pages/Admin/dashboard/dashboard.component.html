@@ -18,57 +18,62 @@
     <ul class="insights">
       <li
         [class.selected]="selectedCard === 'tasksAssigned'"
-        (click)="selectCard('tasksAssigned')"
+        (click)="selectCard('tasksAssigned', 'mytask')"
       >
         <i class="bx bx-task"></i>
         <span class="info">
-          <h3>{{ assignedTasksCount }}</h3>
+          <h3>{{ myTaskCount }}</h3>
           <p>Tasks assigned to you</p>
         </span>
       </li>
       <li
         [class.selected]="selectedCard === 'todaysTasks'"
-        (click)="selectCard('todaysTasks')"
+        (click)="selectCard('todaysTasks', 'today')"
       >
         <i class="bx bx-time-five"></i>
         <span class="info">
-          <h3>5</h3>
+          <h3>{{ todayTaskCount }}</h3>
           <p>Today's Tasks</p>
         </span>
       </li>
       <li
         [class.selected]="selectedCard === 'tasksOverdue'"
-        (click)="selectCard('tasksOverdue')"
+        (click)="selectCard('tasksOverdue', 'overdue')"
       >
         <i class="bx bx-error"></i>
         <span class="info">
-          <h3>4</h3>
+          <h3>{{ overdueTaskCount }}</h3>
           <p>Tasks overdue</p>
         </span>
       </li>
       <li
         [class.selected]="selectedCard === 'tasksCompleted'"
-        (click)="selectCard('tasksCompleted')"
+        (click)="selectCard('tasksCompleted', 'taskcomplete')"
       >
         <i class="bx bx-check-circle"></i>
         <span class="info">
-          <h3>7</h3>
+          <h3>{{ taskCompleted }}</h3>
           <p>Tasks completed</p>
         </span>
       </li>
       <li
         [class.selected]="selectedCard === 'tasksCreated'"
-        (click)="selectCard('tasksCreated')"
+        (click)="selectCard('tasksCreated', 'createdByMe')"
       >
         <i class="bx bx-plus-circle"></i>
         <span class="info">
-          <h3>7</h3>
+          <h3>{{ createdByMeTaskCount }}</h3>
           <p>Tasks created by you</p>
         </span>
       </li>
     </ul>
     <!-- End of Insights -->
-    <app-task-table (addTaskClicked)="openModal()"> </app-task-table>
+    <app-task-table
+      (addTaskClicked)="openModal()"
+      (taskCountUpdated)="onTaskCountUpdated($event)"
+      [filterType]="filterType"
+    >
+    </app-task-table>
   </main>
   <app-addtask-modelpopup
     *ngIf="isModalOpen"

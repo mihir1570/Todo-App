@@ -39,7 +39,6 @@ export class LoginComponent {
 
     this.apiService.adminLogin(this.loginObj).subscribe({
       next: (res: any) => {
-        debugger;
         if (res.token) {
           this.userData = res;
           this.authService.setUserData(res.user);
