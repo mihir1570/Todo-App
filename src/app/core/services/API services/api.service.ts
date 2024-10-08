@@ -40,7 +40,24 @@ export class ApiService {
     );
   }
 
+  statusUpdate(taskId: string, statusObj: { status: string }) {
+    debugger;
+    return this.http.patch(
+      `${Constant.BASE_URL}${Constant.TASK_API.STATUS_UPDATE}/${taskId}`,
+      statusObj // Send status object in the request body
+    );
+  }
+
+  duplicateTask(taskId: string) {
+    debugger
+    return this.http.post(
+      `${Constant.BASE_URL}${Constant.TASK_API.DUPLICATE_TASK}/${taskId}`,
+      null
+    );
+  }
+
   deleteTask(taskId: string) {
+    debugger;
     return this.http.delete(
       `${Constant.BASE_URL}${Constant.TASK_API.DELETE_TASK}/${taskId}`
     );
@@ -87,7 +104,6 @@ export class ApiService {
   }
 
   taskCompleted() {
-    debugger;
     let params = new HttpParams();
     params = params.set('TaskCompleted', 'true');
     return this.http.get(

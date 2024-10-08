@@ -5,6 +5,7 @@ import { ApiService } from '../../../core/services/API services/api.service';
 import { AddtaskModelpopupComponent } from '../../common/addtask-modelpopup/addtask-modelpopup.component';
 import { AuthService } from '../../../core/services/common services/auth.service';
 import { AllTask, TaskApiResponse } from '../../../core/models/interface/user';
+import { ToastService } from '../../../core/services/common services/toast.service';
 
 @Component({
   selector: 'app-task-table',
@@ -43,7 +44,8 @@ export class TaskTableComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toaster: ToastService
   ) {} // Inject the ApiService
 
   ngOnInit(): void {
@@ -74,6 +76,7 @@ export class TaskTableComponent implements OnInit {
         status: task.status,
         description: task.description,
       }));
+      console.log(response.data);
       this.currentView = 'mytask';
       this.updatePaginatedTasks();
       this.emitTaskCount('mytask', this.myTaskList.length);
@@ -133,7 +136,6 @@ export class TaskTableComponent implements OnInit {
   }
 
   myTaskCompleted() {
-    debugger;
     this.apiService.taskCompleted().subscribe((response: any) => {
       this.taskCompletedList = response.data.map((task: any) => ({
         id: task.id,
@@ -213,10 +215,43 @@ export class TaskTableComponent implements OnInit {
 
   // ==================================================
 
-  updateTaskStatus(task: any) {
-    console.log('Updated status for task:', task);
+  statusUpdate(taskId: string, status: any) {
+    const statusObj = { status: status }; // Create an object with the status
+    this.apiService.statusUpdate(taskId, statusObj).subscribe((response: any) => {
+      if (response) {
+        this.updatePaginatedTasks();
+        // this.toaster.showSuccess('Task status updated successfully');
+        console.log("res from update status", response);
+        console.log("success");
+      } else {
+        console.log("error");
+      }
+    });
   }
 
+  deleteTask(taskId: string) {
+    this.apiService.deleteTask(taskId).subscribe((response: any) => {
+      if(response) {
+        console.log("Task deleted success");
+      } else {
+        console.log("Task deleted failed");
+      }
+    })
+  }
+
+  duplicateTask(taskId: string) {
+    debugger
+    this.apiService.duplicateTask(taskId).subscribe((response: any) => {
+      if(response) {
+        this.updatePaginatedTasks();
+        console.log("Task duplicated success");
+        console.log(response);
+      } else {
+        console.log("Task duplicated failed");
+      }
+      });
+  }
+  
   // Method to open the edit modal
   openInfoModal(task: any) {
     this.selectedTask = task;
@@ -240,7 +275,4 @@ export class TaskTableComponent implements OnInit {
     this.selectedTask = null;
   }
 
-  deleteTask(taskId: string) {
-    // Delete task logic here
-  }
 }

@@ -34,7 +34,7 @@ export interface AllTask {
   description: string;
   dueDate: string;
   estimatedHours: string;
-  status: 'COMPLETED' | 'PENDING' | 'OVERDUE';
+  status: 'COMPLETED' | 'PENDING' | 'IN_PROGRESS';
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

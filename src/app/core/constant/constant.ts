@@ -15,5 +15,7 @@ export const Constant = {
     UPDATE_TASK: 'task', // PUT
     DELETE_TASK: 'task', // DELETE
     TASK_DETAIL: 'task', // GET, add user ID as param
+    STATUS_UPDATE: 'task', // PATCH
+    DUPLICATE_TASK: 'task' // POST
   },
 };
