@@ -1,22 +1,19 @@
 export const Constant = {
-  // ======/Admin Authentication/========= //
-  ADMIN_AUTHENTICATION:
-    // 'https://ecommerce-project-seven-pi.vercel.app/api/users/',
-    'https://taskly-backend-vhwk.onrender.com/api/',
-  ADMIN_AUTH: {
-    ADMIN_LOGIN: 'users/login',
-    GET_ALL_USER: 'users',
-    GET_ALL_TASK: "task",
-    ADD_TASK: 'task',
-    UPDATE_TASK: '',
-    DELETE_TASK: ''
+  // Base URLs
+  BASE_URL: 'https://taskly-backend-vhwk.onrender.com/api/',
+
+  // User Authentication APIs
+  USER_AUTH: {
+    LOGIN: 'users/login',
+    GET_ALL_USERS: 'users',
   },
 
-  // ====== Todo ====== //
-  // TODO_APP: 'https://3d71-110-227-199-245.ngrok-free.app/api/task/',
-  // TODO_METHODS: {
-  //   addTask: 'addtask',
-  // },
+  // Task APIs
+  TASK_API: {
+    GET_ALL_TASKS: 'task/alltask',
+    ADD_TASK: 'task', // POST
+    UPDATE_TASK: 'task', // PUT
+    DELETE_TASK: 'task', // DELETE
+    ASSIGN_ME: 'task', // GET, add user ID as param
+  },
 };
-
-

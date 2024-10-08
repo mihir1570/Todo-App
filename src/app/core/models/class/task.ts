@@ -1,4 +1,3 @@
-
 export class Task {
   title: string;
   description: string;
@@ -6,7 +5,7 @@ export class Task {
   dueDate: Date;
   estimatedHours: number;
   status: 'PENDING' | 'in_progress' | 'completed'; // Enum types for task status
-  createAt: string; // UUID of the user (User.id)
+  createdBy: string; // UUID of the user (User.id)
 
   constructor() {
     this.title = '';
@@ -15,10 +14,9 @@ export class Task {
     this.dueDate = new Date();
     this.estimatedHours = 0;
     this.status = 'PENDING'; // Default status 'pending'
-    this.createAt = ''; // Assign the creator's ID
+    this.createdBy = ''; // Assign the creator's ID
   }
 }
-
 
 
 export class LoginObj {

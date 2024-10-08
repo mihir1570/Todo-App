@@ -45,13 +45,16 @@
               <button class="action-btn duplicate">
                 <i class="bx bx-copy"></i>
               </button>
-              <button class="action-btn edit" (click)="addTaskClicked.emit()">
+              <button class="action-btn edit" (click)="onEditTask(task)">
                 <i class="bx bx-edit"></i>
               </button>
-              <button class="action-btn delete">
+              <button class="action-btn delete" (click)="deleteTask(task.id)">
                 <i class="bx bx-trash"></i>
               </button>
-              <button class="action-btn more-info" (click)="openModal(task)">
+              <button
+                class="action-btn more-info"
+                (click)="openInfoModal(task)"
+              >
                 <i class="bx bx-info-circle"></i>
               </button>
             </td>
@@ -63,7 +66,6 @@
     <!-- Bootstrap Pagination -->
     <div aria-label="Page navigation" class="mt-3">
       <ul class="pagination justify-content-end">
-        <!-- Align to the right -->
         <li class="page-item" [class.disabled]="currentPage === 1">
           <a
             class="page-link"
@@ -93,9 +95,9 @@
     </div>
 
     <!-- Modal for More Info -->
-    <div class="modal" [class.show]="isModalOpen" (click)="closeModal()">
+    <div class="modal" [class.show]="showInfoModal" (click)="closeInfoModal()">
       <div class="modal-content" (click)="$event.stopPropagation()">
-        <span class="close" (click)="closeModal()">&times;</span>
+        <span class="close" (click)="closeInfoModal()">&times;</span>
         <h3>Task Details</h3>
         <p><strong>Task Name:</strong> {{ selectedTask?.taskName }}</p>
         <p>
@@ -116,3 +118,11 @@
     </div>
   </div>
 </div>
+
+<!-- Add Task Edit Modal -->
+<app-addtask-modelpopup
+  *ngIf="isModalOpen"
+  [task]="selectedTask"
+  (closePopup)="closeEditModel()"
+>
+</app-addtask-modelpopup>

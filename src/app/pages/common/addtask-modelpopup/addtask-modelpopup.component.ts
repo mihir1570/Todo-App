@@ -5,6 +5,7 @@ import {
   HostListener,
   Output,
   OnInit,
+  Input,
 } from '@angular/core';
 import {
   FormControl,
@@ -16,7 +17,7 @@ import {
 import { ToastService } from '../../../core/services/common services/toast.service';
 import { Task } from '../../../core/models/class/task';
 import { AuthService } from '../../../core/services/common services/auth.service';
-import { ApiService } from '../../../core/services/api services/todo.service';
+import { ApiService } from '../../../core/services/API services/api.service';
 
 @Component({
   selector: 'app-addtask-modelpopup',
@@ -27,11 +28,15 @@ import { ApiService } from '../../../core/services/api services/todo.service';
 })
 export class AddtaskModelpopupComponent implements OnInit {
   @Output() closePopup = new EventEmitter<void>();
-  
+  @Input() task: any;
+  @Input() taskId: any;
   users: any[] = [];
   filteredUsers: any[] = [];
+  taskList: any[] = [];
   isDropdownOpen = false;
+
   selectedUserName: string = '';
+
   addTaskForm: FormGroup = new FormGroup({
     taskTitle: new FormControl('', [
       Validators.required,
@@ -55,6 +60,19 @@ export class AddtaskModelpopupComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAllUsers();
+    if (this.task) {
+      this.populateForm(this.task);
+    }
+  }
+
+  populateForm(task: any) {
+    this.addTaskForm.patchValue({
+      taskTitle: task.taskName,
+      taskDescription: task.description,
+      taskEstimatedTime: task.taskEstimatedTime,
+      taskDueDate: task.dueDate.toISOString().slice(0, 10),
+    });
+    this.selectedUserName = task.taskAssignedTo;
   }
 
   // Fetch users from API
@@ -73,12 +91,11 @@ export class AddtaskModelpopupComponent implements OnInit {
     );
   }
 
-
-selectUser(user: any) {
-  this.addTaskForm.controls['taskAssignedTo'].setValue(user.id); 
-  this.selectedUserName = user.name; 
-  this.isDropdownOpen = false; 
-}
+  selectUser(user: any) {
+    this.addTaskForm.controls['taskAssignedTo'].setValue(user.id);
+    this.selectedUserName = user.name;
+    this.isDropdownOpen = false;
+  }
 
   // Filter users based on the search input
   filterUsers(event: Event) {
@@ -89,36 +106,91 @@ selectUser(user: any) {
   }
 
   // Handle task form submission
+  // onTaskSubmit() {
+  //   if (this.addTaskForm.valid) {
+  //     const currentUser = this.authService.getUserData();
+  //     const formData = this.addTaskForm.value;
+  //     if (!currentUser) {
+  //       this.toastService.showError('No user logged in');
+  //       return;
+  //     }
+
+  //     // Create a new Task object
+  //     const newTask = new Task();
+  //     newTask.title = this.addTaskForm.controls['taskTitle'].value;
+  //     newTask.description = this.addTaskForm.controls['taskDescription'].value;
+  //     newTask.assignedTo = this.addTaskForm.controls['taskAssignedTo'].value; // Selected user's ID
+  //     newTask.dueDate = new Date(
+  //       this.addTaskForm.controls['taskDueDate'].value
+  //     );
+  //     newTask.estimatedHours =
+  //       this.addTaskForm.controls['taskEstimatedTime'].value;
+  //     newTask.createAt = currentUser.id;
+
+  //     // Submit the task to the API
+  //     this.apiService.addTask(newTask).subscribe(
+  //       (response: any) => {
+  //         this.toastService.showSuccess('Task successfully added!');
+  //         this.close(); // Close the modal
+  //       },
+  //       (error) => {
+  //         this.toastService.showError('Failed to add task.');
+  //       }
+  //     );
+  //   } else {
+  //     this.toastService.showError('Please fill all fields correctly.');
+  //     this.addTaskForm.markAllAsTouched();
+  //   }
+  // }
+
   onTaskSubmit() {
     if (this.addTaskForm.valid) {
       const currentUser = this.authService.getUserData();
+      const formData = this.addTaskForm.value;
+
       if (!currentUser) {
         this.toastService.showError('No user logged in');
         return;
       }
 
-      // Create a new Task object
-      const newTask = new Task();
-      newTask.title = this.addTaskForm.controls['taskTitle'].value;
-      newTask.description = this.addTaskForm.controls['taskDescription'].value;
-      newTask.assignedTo = this.addTaskForm.controls['taskAssignedTo'].value; // Selected user's ID
-      newTask.dueDate = new Date(
+      // Create a Task object with the updated data
+      const updatedTask = new Task();
+      updatedTask.title = this.addTaskForm.controls['taskTitle'].value;
+      updatedTask.description =
+        this.addTaskForm.controls['taskDescription'].value;
+      updatedTask.assignedTo =
+        this.addTaskForm.controls['taskAssignedTo'].value; // Selected user's ID
+      updatedTask.dueDate = new Date(
         this.addTaskForm.controls['taskDueDate'].value
       );
-      newTask.estimatedHours =
+      updatedTask.estimatedHours =
         this.addTaskForm.controls['taskEstimatedTime'].value;
-      newTask.createAt = currentUser.id;
+      updatedTask.createdBy = currentUser.id;
 
-      // Submit the task to the API
-      this.apiService.addTask(newTask).subscribe(
-        (response) => {
-          this.toastService.showSuccess('Task successfully added!');
-          this.close(); // Close the modal
-        },
-        (error) => {
-          this.toastService.showError('Failed to add task.');
-        }
-      );
+      // Check if editing or adding a task
+      if (this.taskId) {
+        // If editing, update the task using the task ID
+        this.apiService.updateTask(this.taskId, updatedTask).subscribe(
+          (response) => {
+            this.toastService.showSuccess('Task successfully updated!');
+            this.close(); // Close the modal
+          },
+          (error) => {
+            this.toastService.showError('Failed to update task.');
+          }
+        );
+      } else {
+        // If adding, submit the new task to the API
+        this.apiService.addTask(updatedTask).subscribe(
+          (response) => {
+            this.toastService.showSuccess('Task successfully added!');
+            this.close(); // Close the modal
+          },
+          (error) => {
+            this.toastService.showError('Failed to add task.');
+          }
+        );
+      }
     } else {
       this.toastService.showError('Please fill all fields correctly.');
       this.addTaskForm.markAllAsTouched();

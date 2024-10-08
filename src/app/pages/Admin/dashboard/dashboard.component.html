@@ -22,7 +22,7 @@
       >
         <i class="bx bx-task"></i>
         <span class="info">
-          <h3>40</h3>
+          <h3>{{ assignedTasksCount }}</h3>
           <p>Tasks assigned to you</p>
         </span>
       </li>
@@ -68,7 +68,7 @@
       </li>
     </ul>
     <!-- End of Insights -->
-    <app-task-table (addTaskClicked)="openModal()"></app-task-table>
+    <app-task-table (addTaskClicked)="openModal()"> </app-task-table>
   </main>
   <app-addtask-modelpopup
     *ngIf="isModalOpen"

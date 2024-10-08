@@ -1,27 +1,29 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Observable } from 'rxjs';
-import { ApiService } from '../../../core/services/api services/todo.service';
+import { ApiService } from '../../../core/services/API services/api.service';
+import { AddtaskModelpopupComponent } from '../../common/addtask-modelpopup/addtask-modelpopup.component';
 
 @Component({
   selector: 'app-task-table',
   standalone: true,
-  imports: [FormsModule, CommonModule, DatePipe],
+  imports: [FormsModule, CommonModule, DatePipe, AddtaskModelpopupComponent],
   templateUrl: './task-table.component.html',
   styleUrls: ['./task-table.component.css'],
 })
 export class TaskTableComponent implements OnInit {
   @Output() addTaskClicked = new EventEmitter<void>();
-  
+
   allTaskList: any[] = []; // Array to hold tasks fetched from the API
   currentPage = 1;
   itemsPerPage = 3; // Number of tasks per page
   paginatedTasks: any[] = [];
   totalPages = 0;
 
+  // Modal state
   isModalOpen = false;
-  selectedTask: any;
+  showInfoModal = false;
+  selectedTask: any = null;
 
   constructor(private apiService: ApiService) {} // Inject the ApiService
 
@@ -30,33 +32,49 @@ export class TaskTableComponent implements OnInit {
   }
 
   fetchTasks() {
-    this.apiService.getAllTask().subscribe((response) => {
+    this.apiService.getAllTask().subscribe((response: any) => {
       this.allTaskList = response.data.map((task: any) => ({
-        id: task.id,
-        taskName: task.title, // Renamed for consistency with your HTML
+        id: task.id, // Ensure task ID is included
+        taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
-        taskAssignedTo: task.createdBy.name, // Assuming you want the creator's name as assigned to
+        taskAssignedTo: task.createdBy.name,
         dueDate: new Date(task.dueDate),
         status: task.status,
         description: task.description,
       }));
-      this.updatePaginatedTasks(); // Update the pagination after fetching tasks
+      this.updatePaginatedTasks();
     });
   }
 
   updateTaskStatus(task: any) {
     console.log('Updated status for task:', task);
-    // Call to service to update task status
   }
 
-  openModal(task: any) {
+  // Method to open the edit modal
+  openInfoModal(task: any) {
     this.selectedTask = task;
-    this.isModalOpen = true;
+    this.showInfoModal = true; // Change modal state
   }
 
-  closeModal() {
-    this.isModalOpen = false;
+  closeInfoModal() {
+    this.showInfoModal = false;
     this.selectedTask = null;
+  }
+
+  onEditTask(task: any) {
+    this.selectedTask = task;
+    this.isModalOpen = true; // Open edit modal
+    this.selectedTask.taskId = task.id; // Set the task ID in the modal
+    this.selectedTask.task = task; // Pass the entire task object to populate the form
+  }
+
+  closeEditModel() {
+    this.isModalOpen = false; // Close edit modal
+    this.selectedTask = null; // Clear selected task
+  }
+
+  deleteTask(taskId: string) {
+    // Delete task logic here
   }
 
   // Pagination logic

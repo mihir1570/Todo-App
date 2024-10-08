@@ -1,7 +1,7 @@
 <div class="modal-overlay" (click)="close()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3 class="modal-title">Add Task</h3>
+      <h3 class="modal-title">{{ task ? "Edit Task" : "Add Task" }}</h3>
       <button class="close-btn" (click)="close()">&times;</button>
     </div>
     <form [formGroup]="addTaskForm" (ngSubmit)="onTaskSubmit()">
@@ -77,8 +77,7 @@
             placeholder="Select a user..."
             (click)="toggleDropdown()"
             readonly
-            [value]="
-              selectedUserName || 'Select a user'"
+            [value]="selectedUserName || 'Select a user'"
             class="dropdown-input"
           />
           <div class="dropdown-content" [ngClass]="{ show: isDropdownOpen }">
@@ -109,7 +108,6 @@
           Please select a user to assign the task.
         </small>
       </div>
-      
 
       <!-- Estimated Time -->
       <div class="form-group">
@@ -155,7 +153,9 @@
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="submit-btn">Add Task</button>
+      <button type="submit" class="submit-btn">
+        {{ task ? "Update Task" : "Add Task" }}
+      </button>
     </form>
   </div>
 </div>
