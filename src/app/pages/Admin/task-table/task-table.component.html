@@ -41,7 +41,10 @@
               </select>
             </td>
             <td>
-              <button class="action-btn duplicate" (click)="duplicateTask(task.id)">
+              <button
+                class="action-btn duplicate"
+                (click)="duplicateTask(task.id)"
+              >
                 <i class="bx bx-copy"></i>
               </button>
               <button class="action-btn edit" (click)="onEditTask(task)">
@@ -62,9 +65,15 @@
       </table>
     </div>
 
-    <!-- Bootstrap Pagination -->
+    <!-- Pagination -->
     <div aria-label="Page navigation" class="mt-3">
       <ul class="pagination justify-content-end">
+        <!-- First Page Button -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="goToFirstPage()">First</a>
+        </li>
+
+        <!-- Previous Button -->
         <li class="page-item" [class.disabled]="currentPage === 1">
           <a
             class="page-link"
@@ -72,15 +81,25 @@
             aria-label="Previous"
           >
             <span aria-hidden="true">&laquo;</span>
+            <!-- Single arrow for previous -->
           </a>
         </li>
+
+        <!-- Dynamic Page Numbers -->
         <li
           class="page-item"
-          *ngFor="let page of [].constructor(totalPages); let i = index"
-          [class.active]="currentPage === i + 1"
+          *ngFor="
+            let page of [].constructor(endPage - startPage + 1);
+            let i = index
+          "
+          [class.active]="currentPage === startPage + i"
         >
-          <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+          <a class="page-link" (click)="goToPage(startPage + i)">
+            {{ startPage + i }}
+          </a>
         </li>
+
+        <!-- Next Button -->
         <li class="page-item" [class.disabled]="currentPage === totalPages">
           <a
             class="page-link"
@@ -88,7 +107,13 @@
             aria-label="Next"
           >
             <span aria-hidden="true">&raquo;</span>
+            <!-- Single arrow for next -->
           </a>
+        </li>
+
+        <!-- Last Page Button -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="goToLastPage()">Last</a>
         </li>
       </ul>
     </div>

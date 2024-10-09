@@ -33,14 +33,14 @@ export class ApiService {
     );
   }
 
-  updateTask(taskId: string, taskData: Task) {
+  updateTask(taskId: string, taskData: Task): Observable<any> {
     return this.http.put(
       `${Constant.BASE_URL}${Constant.TASK_API.UPDATE_TASK}/${taskId}`,
       taskData
     );
   }
 
-  statusUpdate(taskId: string, statusObj: { status: string }) {
+  statusUpdate(taskId: string, statusObj: { status: string }): Observable<any> {
     debugger;
     return this.http.patch(
       `${Constant.BASE_URL}${Constant.TASK_API.STATUS_UPDATE}/${taskId}`,
@@ -48,22 +48,21 @@ export class ApiService {
     );
   }
 
-  duplicateTask(taskId: string) {
-    debugger
+  duplicateTask(taskId: string): Observable<any> {
+    debugger;
     return this.http.post(
       `${Constant.BASE_URL}${Constant.TASK_API.DUPLICATE_TASK}/${taskId}`,
       null
     );
   }
 
-  deleteTask(taskId: string) {
+  deleteTask(taskId: string): Observable<any> {
     debugger;
     return this.http.delete(
       `${Constant.BASE_URL}${Constant.TASK_API.DELETE_TASK}/${taskId}`
     );
   }
 
-  // ======================================== //
   assignMe(userId: string) {
     return this.http.get(
       `${Constant.BASE_URL}${Constant.TASK_API.TASK_DETAIL}/${userId}`

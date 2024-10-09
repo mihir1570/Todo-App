@@ -107,11 +107,9 @@ td img {
     color: #17a2b8;
 }
 
-
 body.dark .select-options {
     background-color: #25252c;
 }
-
 
 .select-options {
     background-color: var(--light);
@@ -120,7 +118,11 @@ body.dark .select-options {
     border-radius: 8px;
     padding: 0.5rem 1rem;
     font-size: 1rem;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    transition:
+        background-color 0.3s,
+        color 0.3s,
+        border-color 0.3s,
+        box-shadow 0.3s;
     appearance: none;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -201,7 +203,6 @@ body.dark td {
     color: #ffffff;
 }
 
-
 /* pagination Styles */
 
 .pagination {
@@ -231,8 +232,6 @@ body.dark td {
 .page-item .page-link {
     padding: 0.5rem 1rem;
 }
-
-
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -264,9 +263,6 @@ body.dark td {
     }
 }
 
-
-
-
 /* Modal Styles */
 .modal {
     position: fixed;
@@ -280,7 +276,9 @@ body.dark td {
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
 }
 
 .modal.show {
@@ -305,13 +303,11 @@ body.dark td {
 
 .modal-content h3 {
     margin-bottom: 20px;
-
 }
 
 .modal-content p {
     font-size: 16px;
     line-height: 1.5;
-
 }
 
 .close {
@@ -320,5 +316,4 @@ body.dark td {
     right: 15px;
     font-size: 24px;
     cursor: pointer;
-
 }

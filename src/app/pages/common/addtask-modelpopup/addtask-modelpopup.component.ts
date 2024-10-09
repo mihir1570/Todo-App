@@ -18,6 +18,7 @@ import { ToastService } from '../../../core/services/common services/toast.servi
 import { Task } from '../../../core/models/class/task';
 import { AuthService } from '../../../core/services/common services/auth.service';
 import { ApiService } from '../../../core/services/API services/api.service';
+import { AllTask, User } from '../../../core/models/interface/user';
 
 @Component({
   selector: 'app-addtask-modelpopup',
@@ -30,9 +31,9 @@ export class AddtaskModelpopupComponent implements OnInit {
   @Output() closePopup = new EventEmitter<void>();
   @Input() task: any;
   @Input() taskId: any;
-  users: any[] = [];
-  filteredUsers: any[] = [];
-  taskList: any[] = [];
+  users: User[] = [];
+  filteredUsers: User[] = [];
+  taskList: Task[] = [];
   isDropdownOpen = false;
 
   selectedUserName: string = '';
@@ -79,11 +80,11 @@ export class AddtaskModelpopupComponent implements OnInit {
   fetchAllUsers() {
     this.apiService.getAllUsers().subscribe(
       (res: any) => {
-        console.log('Response from API:', res); // Check if API response is correct
+        // console.log('Response from API:', res); // Check if API response is correct
         this.users = res.data; // Assign users to the users array
-        console.log('Users:', this.users); // Log the users data
+        // console.log('Users:', this.users); // Log the users data
         this.filteredUsers = this.users; // Initially display all users
-        console.log('Filtered Users:', this.filteredUsers); // Log the filtered users to confirm assignment
+        // console.log('Filtered Users:', this.filteredUsers); // Log the filtered users to confirm assignment
       },
       (error) => {
         console.error('Error fetching users:', error); // Log any error

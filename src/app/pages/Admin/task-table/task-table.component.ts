@@ -20,18 +20,23 @@ export class TaskTableComponent implements OnInit {
   @Output() taskCountUpdated = new EventEmitter<{
     type: string;
     count: number;
-  }>(); // New Output for emitting task counts
+  }>(); // for emitting task counts
 
-  myTaskList: any[] = [];
-  todayTaskList: any[] = [];
-  taskCreatedByMeList: any[] = [];
-  taskOverDueList: any[] = [];
-  taskCompletedList: any = [];
-  currentPage = 1;
-  itemsPerPage = 3; // Number of tasks per page
+  myTaskList: AllTask[] = [];
+  todayTaskList: AllTask[] = [];
+  taskCreatedByMeList: AllTask[] = [];
+  taskOverDueList: AllTask[] = [];
+  taskCompletedList: AllTask[] = [];
   paginatedTasks: any[] = [];
-  totalPages = 0;
   currentUser: any = null;
+
+  // pagination
+  currentPage = 1;
+  itemsPerPage = 3;
+  totalPages = 0;
+  maxPageDisplay = 5; // Maximum number of pagination buttons displayed at a time
+  startPage = 1;
+  endPage = this.maxPageDisplay;
 
   // Modal state
   isModalOpen = false;
@@ -45,8 +50,8 @@ export class TaskTableComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    private toaster: ToastService
-  ) {} // Inject the ApiService
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.currentUser = this.authService.getUserData();
@@ -76,7 +81,6 @@ export class TaskTableComponent implements OnInit {
         status: task.status,
         description: task.description,
       }));
-      console.log(response.data);
       this.currentView = 'mytask';
       this.updatePaginatedTasks();
       this.emitTaskCount('mytask', this.myTaskList.length);
@@ -85,7 +89,7 @@ export class TaskTableComponent implements OnInit {
 
   todayAllTask() {
     this.apiService.todayTask().subscribe((response: any) => {
-      this.todayTaskList = response.data.map((task: any) => ({
+      this.todayTaskList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
@@ -103,7 +107,7 @@ export class TaskTableComponent implements OnInit {
   taskCreatedByMe() {
     const userId = this.currentUser?.id;
     this.apiService.taskCreatedByMe(userId).subscribe((response: any) => {
-      this.taskCreatedByMeList = response.data.map((task: any) => ({
+      this.taskCreatedByMeList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
@@ -120,7 +124,7 @@ export class TaskTableComponent implements OnInit {
 
   allTaskOverDue() {
     this.apiService.overDueTask().subscribe((response: any) => {
-      this.taskOverDueList = response.data.map((task: any) => ({
+      this.taskOverDueList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
@@ -137,7 +141,7 @@ export class TaskTableComponent implements OnInit {
 
   myTaskCompleted() {
     this.apiService.taskCompleted().subscribe((response: any) => {
-      this.taskCompletedList = response.data.map((task: any) => ({
+      this.taskCompletedList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
@@ -149,6 +153,44 @@ export class TaskTableComponent implements OnInit {
       this.currentView = 'taskcomplete';
       this.updatePaginatedTasks();
       this.emitTaskCount('taskcomplete', this.taskCompletedList.length);
+    });
+  }
+
+  // ===================API calls for perform===============
+
+  statusUpdate(taskId: string, status: string) {
+    const statusObj = { status: status };
+    this.apiService
+      .statusUpdate(taskId, statusObj)
+      .subscribe((response: any) => {
+        if (response) {
+          this.updatePaginatedTasks();
+          this.toastService.showSuccess('Task status updated successfully');
+        } else {
+          this.toastService.showWarning('Error while updating task');
+        }
+      });
+  }
+
+  deleteTask(taskId: string) {
+    this.apiService.deleteTask(taskId).subscribe((response: any) => {
+      if (response) {
+        this.toastService.showSuccess('Task delete successfully');
+      } else {
+        this.toastService.showError('Task deleted failed');
+      }
+    });
+  }
+
+  duplicateTask(taskId: string) {
+    debugger;
+    this.apiService.duplicateTask(taskId).subscribe((response: any) => {
+      if (response) {
+        this.updatePaginatedTasks();
+        this.toastService.showSuccess('Task duplicated success');
+      } else {
+        this.toastService.showError('Task duplicated failed');
+      }
     });
   }
 
@@ -179,7 +221,8 @@ export class TaskTableComponent implements OnInit {
     }
   }
 
-  // Pagination logic
+  // ===================Pagination==============
+
   updatePaginatedTasks() {
     let tasksToPaginate = [];
     switch (this.currentView) {
@@ -204,6 +247,19 @@ export class TaskTableComponent implements OnInit {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     this.paginatedTasks = tasksToPaginate.slice(start, end);
+
+    // Adjust startPage and endPage for pagination buttons
+    this.startPage = Math.max(
+      1,
+      this.currentPage - Math.floor(this.maxPageDisplay / 2)
+    );
+    this.endPage = Math.min(
+      this.startPage + this.maxPageDisplay - 1,
+      this.totalPages
+    );
+    if (this.endPage - this.startPage < this.maxPageDisplay - 1) {
+      this.startPage = Math.max(1, this.endPage - this.maxPageDisplay + 1);
+    }
   }
 
   goToPage(page: number) {
@@ -213,47 +269,16 @@ export class TaskTableComponent implements OnInit {
     }
   }
 
-  // ==================================================
-
-  statusUpdate(taskId: string, status: any) {
-    const statusObj = { status: status }; // Create an object with the status
-    this.apiService.statusUpdate(taskId, statusObj).subscribe((response: any) => {
-      if (response) {
-        this.updatePaginatedTasks();
-        // this.toaster.showSuccess('Task status updated successfully');
-        console.log("res from update status", response);
-        console.log("success");
-      } else {
-        console.log("error");
-      }
-    });
+  goToFirstPage() {
+    this.goToPage(1);
   }
 
-  deleteTask(taskId: string) {
-    this.apiService.deleteTask(taskId).subscribe((response: any) => {
-      if(response) {
-        console.log("Task deleted success");
-      } else {
-        console.log("Task deleted failed");
-      }
-    })
+  goToLastPage() {
+    this.goToPage(this.totalPages);
   }
 
-  duplicateTask(taskId: string) {
-    debugger
-    this.apiService.duplicateTask(taskId).subscribe((response: any) => {
-      if(response) {
-        this.updatePaginatedTasks();
-        console.log("Task duplicated success");
-        console.log(response);
-      } else {
-        console.log("Task duplicated failed");
-      }
-      });
-  }
-  
   // Method to open the edit modal
-  openInfoModal(task: any) {
+  openInfoModal(task: AllTask) {
     this.selectedTask = task;
     this.showInfoModal = true;
   }
@@ -263,7 +288,7 @@ export class TaskTableComponent implements OnInit {
     this.selectedTask = null;
   }
 
-  onEditTask(task: any) {
+  onEditTask(task: AllTask) {
     this.selectedTask = task;
     this.isModalOpen = true;
     this.selectedTask.taskId = task.id;
@@ -274,5 +299,4 @@ export class TaskTableComponent implements OnInit {
     this.isModalOpen = false;
     this.selectedTask = null;
   }
-
 }
