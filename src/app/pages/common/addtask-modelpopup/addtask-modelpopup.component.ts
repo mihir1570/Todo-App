@@ -35,6 +35,9 @@ export class AddtaskModelpopupComponent implements OnInit {
   users: User[] = [];
   filteredUsers: User[] = [];
   taskList: Task[] = [];
+  users: User[] = [];
+  filteredUsers: User[] = [];
+  taskList: Task[] = [];
   isDropdownOpen = false;
 
   selectedUserName: string = '';
