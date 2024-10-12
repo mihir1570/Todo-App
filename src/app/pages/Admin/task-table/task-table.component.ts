@@ -42,11 +42,6 @@ export class TaskTableComponent implements OnInit {
   taskCreatedByMeList: AllTask[] = [];
   taskOverDueList: AllTask[] = [];
   taskCompletedList: AllTask[] = [];
-  myTaskList: AllTask[] = [];
-  todayTaskList: AllTask[] = [];
-  taskCreatedByMeList: AllTask[] = [];
-  taskOverDueList: AllTask[] = [];
-  taskCompletedList: AllTask[] = [];
   paginatedTasks: any[] = [];
 
 
@@ -123,7 +118,6 @@ export class TaskTableComponent implements OnInit {
   todayAllTask() {
     this.apiService.todayTask().subscribe((response: any) => {
       this.todayTaskList = response.data.map((task: AllTask) => ({
-      this.todayTaskList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
@@ -143,7 +137,6 @@ export class TaskTableComponent implements OnInit {
     const userId = this.currentUser?.id;
     this.apiService.taskCreatedByMe(userId).subscribe((response: any) => {
       this.taskCreatedByMeList = response.data.map((task: AllTask) => ({
-      this.taskCreatedByMeList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
@@ -162,7 +155,6 @@ export class TaskTableComponent implements OnInit {
   allTaskOverDue() {
     this.apiService.overDueTask().subscribe((response: any) => {
       this.taskOverDueList = response.data.map((task: AllTask) => ({
-      this.taskOverDueList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
         taskEstimatedTime: task.estimatedHours,
@@ -179,7 +171,6 @@ export class TaskTableComponent implements OnInit {
 
   myTaskCompleted() {
     this.apiService.taskCompleted().subscribe((response: any) => {
-      this.taskCompletedList = response.data.map((task: AllTask) => ({
       this.taskCompletedList = response.data.map((task: AllTask) => ({
         id: task.id,
         taskName: task.title,
@@ -278,8 +269,6 @@ export class TaskTableComponent implements OnInit {
 
   // ===================Pagination==============
 
-  // ===================Pagination==============
-
   updatePaginatedTasks() {
     let tasksToPaginate = [];
 
@@ -328,19 +317,6 @@ export class TaskTableComponent implements OnInit {
     if (this.endPage - this.startPage < this.maxPageDisplay - 1) {
       this.startPage = Math.max(1, this.endPage - this.maxPageDisplay + 1);
     }
-
-    // Adjust startPage and endPage for pagination buttons
-    this.startPage = Math.max(
-      1,
-      this.currentPage - Math.floor(this.maxPageDisplay / 2)
-    );
-    this.endPage = Math.min(
-      this.startPage + this.maxPageDisplay - 1,
-      this.totalPages
-    );
-    if (this.endPage - this.startPage < this.maxPageDisplay - 1) {
-      this.startPage = Math.max(1, this.endPage - this.maxPageDisplay + 1);
-    }
   }
 
   goToPage(page: number) {
@@ -356,17 +332,9 @@ export class TaskTableComponent implements OnInit {
 
   goToLastPage() {
     this.goToPage(this.totalPages);
-  goToFirstPage() {
-    this.goToPage(1);
   }
-
-  goToLastPage() {
-    this.goToPage(this.totalPages);
-  }
-
 
   // Method to open the edit modal
-  openInfoModal(task: AllTask) {
   openInfoModal(task: AllTask) {
     this.selectedTask = task;
     this.showInfoModal = true;

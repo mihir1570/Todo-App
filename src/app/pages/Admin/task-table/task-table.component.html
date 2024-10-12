@@ -21,58 +21,76 @@
 
     <!--Table Part-->
     <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Task Name</th>
-            <th>Estimated Hours</th>
-            <th>Assigned By</th>
-            <th>Due On</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let task of paginatedTasks">
-            <td>
-              <p>{{ task.taskName }}</p>
-            </td>
-            <td>{{ task.taskEstimatedTime }} hrs</td>
-            <td>
-              <p>{{ task.taskAssignedTo }}</p>
-            </td>
-            <td>{{ task.dueDate | date : "dd-MM-yyyy" }}</td>
-            <td>
-              <select
-                class="select-options"
-                [(ngModel)]="task.status"
-                (change)="statusUpdate(task.id, task.status)"
-              >
-                <option value="PENDING">Pending</option>
-                <option value="IN_PROGRESS">In Progress</option>
-                <option value="COMPLETED">Completed</option>
-              </select>
-            </td>
-            <td>
-              <button class="action-btn duplicate" (click)="duplicateTask(task.id)">
-                <i class="bx bx-copy"></i>
-              </button>
-              <button class="action-btn edit" (click)="onEditTask(task)">
-                <i class="bx bx-edit"></i>
-              </button>
-              <button class="action-btn delete" (click)="deleteTask(task.id)">
-                <i class="bx bx-trash"></i>
-              </button>
-              <button
-                class="action-btn more-info"
-                (click)="openInfoModal(task)"
-              >
-                <i class="bx bx-info-circle"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="loader-container" *ngIf="loadrService.isLoading | async">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <div *ngIf="!(loadrService.isLoading | async)">
+        <table *ngIf="paginatedTasks.length > 0; else noTasksTemplate">
+          <thead>
+            <tr>
+              <th>Task Name</th>
+              <th>Estimated Hours</th>
+              <th>{{ assignedColumnTitle }}</th>
+              <th>Due On</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let task of paginatedTasks">
+              <td>
+                <p>{{ task.taskName }}</p>
+              </td>
+              <td>{{ task.taskEstimatedTime }} hrs</td>
+              <td>
+                <p>{{ task.taskAssign }}</p>
+              </td>
+              <td>{{ task.dueDate | date : "dd-MM-yyyy" }}</td>
+              <td>
+                <select
+                  class="select-options"
+                  [(ngModel)]="task.status"
+                  (change)="statusUpdate(task.id, task.status)"
+                >
+                  <option value="PENDING">Pending</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="COMPLETED">Completed</option>
+                </select>
+              </td>
+              <td>
+                <button
+                  class="action-btn duplicate"
+                  (click)="duplicateTask(task.id, task)"
+                >
+                  <i class="bx bx-copy"></i>
+                </button>
+                <button class="action-btn edit" (click)="onEditTask(task)">
+                  <i class="bx bx-edit"></i>
+                </button>
+                <button
+                  class="action-btn delete"
+                  (click)="deleteTask(task.id, task)"
+                >
+                  <i class="bx bx-trash"></i>
+                </button>
+                <button
+                  class="action-btn more-info"
+                  (click)="openInfoModal(task)"
+                >
+                  <i class="bx bx-info-circle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- No Tasks Available Template -->
+        <ng-template #noTasksTemplate>
+          <div class="no-tasks">
+            <i class="bx bx-task-x"></i>
+            <p>No {{ tableTitle }} available</p>
+          </div>
+        </ng-template>
+      </div>
     </div>
 
     <!-- Pagination -->
