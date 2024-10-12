@@ -12,7 +12,7 @@ export const Constant = {
   // Task APIs
   TASK_API: {
     ADD_TASK: 'task', // POST
-    UPDATE_TASK: 'task', // PUT
+    UPDATE_TASK: 'task/updatetask', // PATCH
     DELETE_TASK: 'task', // DELETE
     TASK_DETAIL: 'task', // GET, add user ID as param
     STATUS_UPDATE: 'task', // PATCH

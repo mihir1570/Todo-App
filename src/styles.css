@@ -567,7 +567,8 @@ body {
     }
 
     .content main .bottom-data .header {
-        min-width: 340px;
+        /* min-width: 340px; */
+        min-width: auto;
     }
 
     .content main .bottom-data .orders table {

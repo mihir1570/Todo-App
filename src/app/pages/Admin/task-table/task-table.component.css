@@ -232,7 +232,18 @@ body.dark td {
     padding: 0.5rem 1rem;
 }
 
-
+.no-tasks {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+  }
+  
+  .no-tasks i {
+    font-size: 50px;
+    color: #ccc; 
+    margin-bottom: 10px;
+  }
+  
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -265,9 +276,7 @@ body.dark td {
 }
 
 
-
-
-/* Modal Styles */
+/* Task Info Modal Styles */
 .modal {
     position: fixed;
     top: 0;
@@ -321,4 +330,79 @@ body.dark td {
     font-size: 24px;
     cursor: pointer;
 
+}
+
+
+/* Sorting Dropdown */
+.sorting-dropdown {
+    position: absolute;
+    right: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: dropdownSlideIn 0.3s ease forwards;
+    z-index: 1000;
+}
+
+@keyframes dropdownSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes dropdownSlideOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.sorting-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.sorting-dropdown ul li {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sorting-dropdown ul li:hover {
+    background-color: #f0f0f0;
+}
+
+.sorting-dropdown ul li i {
+    margin-right: 8px;
+    font-size: 16px;
+    color: #6c757d;
+}
+
+.sorting-dropdown ul li:first-child {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Hide dropdown with smooth transition */
+.hide-dropdown {
+    animation: dropdownSlideOut 0.3s ease forwards;
+}
+
+/* Add subtle hover effect on the filter icon */
+.bx-filter:hover {
+    color: #007bff;
 }

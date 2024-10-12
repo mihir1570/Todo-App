@@ -42,7 +42,6 @@ export class LoginComponent {
         if (res.token) {
           this.userData = res;
           this.authService.setUserData(res.user);
-          console.log(res);
           this.loginService.setCookie('cookiesAdmin', res.token, 24, 'hours'); // For 30 seconds/minutes/hours
           this.toastService.showSuccess('Welcome Back');
           this.router.navigate(['dashboard']);
@@ -51,7 +50,6 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        console.error('Login failed', err);
         alert('Error occurred during login.');
       },
     });

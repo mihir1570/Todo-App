@@ -2,69 +2,106 @@
   <div class="tasks">
     <div class="header">
       <i class="bx bx-task"></i>
-      <h3>Task List</h3>
-      <i class="bx bx-filter"></i>
+      <h3>{{ tableTitle }}</h3>
+      <i class="bx bx-filter" (click)="toggleSortDropdown()"></i>
       <i class="bx bx-plus" (click)="addTaskClicked.emit()"></i>
     </div>
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Task Name</th>
-            <th>Estimated Hours</th>
-            <th>Assigned By</th>
-            <th>Due On</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let task of paginatedTasks">
-            <td>
-              <p>{{ task.taskName }}</p>
-            </td>
-            <td>{{ task.taskEstimatedTime }} hrs</td>
-            <td>
-              <p>{{ task.taskAssignedTo }}</p>
-            </td>
-            <td>{{ task.dueDate | date : "dd-MM-yyyy" }}</td>
-            <td>
-              <select
-                class="select-options"
-                [(ngModel)]="task.status"
-                (change)="statusUpdate(task.id, task.status)"
-              >
-                <option value="PENDING">Pending</option>
-                <option value="IN_PROGRESS">In Progress</option>
-                <option value="COMPLETED">Completed</option>
-              </select>
-            </td>
-            <td>
-              <button class="action-btn duplicate" (click)="duplicateTask(task.id)">
-                <i class="bx bx-copy"></i>
-              </button>
-              <button class="action-btn edit" (click)="onEditTask(task)">
-                <i class="bx bx-edit"></i>
-              </button>
-              <button class="action-btn delete" (click)="deleteTask(task.id)">
-                <i class="bx bx-trash"></i>
-              </button>
-              <button
-                class="action-btn more-info"
-                (click)="openInfoModal(task)"
-              >
-                <i class="bx bx-info-circle"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Sorting Dropdown -->
+    <div class="sorting-dropdown" *ngIf="showSortDropdown">
+      <ul>
+        <li (click)="sortTasks('latest')">
+          <i class="bx bx-chevron-up"></i> Sort by Latest Task
+        </li>
+        <li (click)="sortTasks('oldest')">
+          <i class="bx bx-chevron-down"></i> Sort by Oldest Task
+        </li>
+      </ul>
     </div>
 
-    <!-- Bootstrap Pagination -->
+    <!--Table Part-->
+    <div class="table-wrapper">
+      <div class="loader-container" *ngIf="loadrService.isLoading | async">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <div *ngIf="!(loadrService.isLoading | async)">
+        <table *ngIf="paginatedTasks.length > 0; else noTasksTemplate">
+          <thead>
+            <tr>
+              <th>Task Name</th>
+              <th>Estimated Hours</th>
+              <th>{{ assignedColumnTitle }}</th>
+              <th>Due On</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let task of paginatedTasks">
+              <td>
+                <p>{{ task.taskName }}</p>
+              </td>
+              <td>{{ task.taskEstimatedTime }} hrs</td>
+              <td>
+                <p>{{ task.taskAssign }}</p>
+              </td>
+              <td>{{ task.dueDate | date : "dd-MM-yyyy" }}</td>
+              <td>
+                <select
+                  class="select-options"
+                  [(ngModel)]="task.status"
+                  (change)="statusUpdate(task.id, task.status)"
+                >
+                  <option value="PENDING">Pending</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="COMPLETED">Completed</option>
+                </select>
+              </td>
+              <td>
+                <button
+                  class="action-btn duplicate"
+                  (click)="duplicateTask(task.id, task)"
+                >
+                  <i class="bx bx-copy"></i>
+                </button>
+                <button class="action-btn edit" (click)="onEditTask(task)">
+                  <i class="bx bx-edit"></i>
+                </button>
+                <button
+                  class="action-btn delete"
+                  (click)="deleteTask(task.id, task)"
+                >
+                  <i class="bx bx-trash"></i>
+                </button>
+                <button
+                  class="action-btn more-info"
+                  (click)="openInfoModal(task)"
+                >
+                  <i class="bx bx-info-circle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- No Tasks Available Template -->
+        <ng-template #noTasksTemplate>
+          <div class="no-tasks">
+            <i class="bx bx-task-x"></i>
+            <p>No {{ tableTitle }} available</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Pagination -->
     <div aria-label="Page navigation" class="mt-3">
       <ul class="pagination justify-content-end">
+        <!-- First Page Button -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="goToFirstPage()">First</a>
+        </li>
+
+        <!-- Previous Button -->
         <li class="page-item" [class.disabled]="currentPage === 1">
           <a
             class="page-link"
@@ -72,15 +109,25 @@
             aria-label="Previous"
           >
             <span aria-hidden="true">&laquo;</span>
+            <!-- Single arrow for previous -->
           </a>
         </li>
+
+        <!-- Dynamic Page Numbers -->
         <li
           class="page-item"
-          *ngFor="let page of [].constructor(totalPages); let i = index"
-          [class.active]="currentPage === i + 1"
+          *ngFor="
+            let page of [].constructor(endPage - startPage + 1);
+            let i = index
+          "
+          [class.active]="currentPage === startPage + i"
         >
-          <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+          <a class="page-link" (click)="goToPage(startPage + i)">
+            {{ startPage + i }}
+          </a>
         </li>
+
+        <!-- Next Button -->
         <li class="page-item" [class.disabled]="currentPage === totalPages">
           <a
             class="page-link"
@@ -88,7 +135,13 @@
             aria-label="Next"
           >
             <span aria-hidden="true">&raquo;</span>
+            <!-- Single arrow for next -->
           </a>
+        </li>
+
+        <!-- Last Page Button -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="goToLastPage()">Last</a>
         </li>
       </ul>
     </div>
@@ -103,7 +156,7 @@
           <strong>Estimated Hours:</strong>
           {{ selectedTask?.taskEstimatedTime }} hrs
         </p>
-        <p><strong>Assigned To:</strong> {{ selectedTask?.taskAssignedTo }}</p>
+        <p><strong>Assigned By:</strong> {{ selectedTask?.taskAssign }}</p>
         <p>
           <strong>Due On:</strong>
           {{ selectedTask?.dueDate | date : "dd-MM-yyyy" }}
@@ -122,6 +175,7 @@
 <app-addtask-modelpopup
   *ngIf="isModalOpen"
   [task]="selectedTask"
+  [taskId]="selectedTask.taskId"
   (closePopup)="closeEditModel()"
 >
 </app-addtask-modelpopup>

@@ -5,6 +5,7 @@
       <button class="close-btn" (click)="close()">&times;</button>
     </div>
     <form [formGroup]="addTaskForm" (ngSubmit)="onTaskSubmit()">
+      
       <!-- Task Title -->
       <div class="form-group">
         <label for="taskTitle">Task Title</label>
@@ -30,7 +31,7 @@
           <ng-container
             *ngIf="addTaskForm.controls['taskTitle'].hasError('minlength')"
           >
-            Task title must be at least 3 characters long.
+            Title must be at least 3 characters long.
           </ng-container>
         </div>
       </div>
@@ -56,6 +57,13 @@
             *ngIf="addTaskForm.controls['taskDescription'].hasError('required')"
           >
             Description is required.
+          </ng-container>
+          <ng-container
+            *ngIf="
+              addTaskForm.controls['taskDescription'].hasError('minlength')
+            "
+          >
+            Description must be at least 10 characters long.
           </ng-container>
           <ng-container
             *ngIf="
@@ -129,6 +137,15 @@
         >
           Estimated time is required.
         </small>
+        <small
+          *ngIf="
+            addTaskForm.hasError('invalidTimeError') &&
+            addTaskForm.controls['taskEstimatedTime'].touched
+          "
+          class="error-text"
+        >
+        Estimated time exceeds available hours.
+        </small>
       </div>
 
       <!-- Due Date -->
@@ -148,7 +165,16 @@
           "
           class="error-text"
         >
-          Please select a due date.
+          Due date is required.
+        </small>
+        <small
+          *ngIf="
+            addTaskForm.hasError('pastDateError') &&
+            addTaskForm.controls['taskDueDate'].touched
+          "
+          class="error-text"
+        >
+          You cannot select a past date.
         </small>
       </div>
 
