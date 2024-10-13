@@ -1,5 +1,45 @@
 <div class="content">
-  <app-navbar></app-navbar>
+  <!-- Navbar -->
+  <nav>
+    <form>
+      <div class="form-input">
+        <input type="search" placeholder="Search..." />
+        <button class="search-btn" type="submit">
+          <i class="bx bx-search"></i>
+        </button>
+      </div>
+    </form>
+
+    <input type="checkbox" id="theme-toggle" hidden />
+    <label for="theme-toggle" class="theme-toggle"></label>
+
+    <a class="notif">
+      <i class="bx bx-bell"></i>
+      <span class="count">12</span>
+    </a>
+
+    <!-- <div
+      *ngIf="showNotificationDropdown"
+      class="notification-dropdown"
+      [ngClass]="{ open: showNotificationDropdown }"
+    >
+      <div
+        *ngFor="let task of taskNotifications; let i = index"
+        class="notification-item"
+      >
+        <span>{{ task.taskName }}</span>
+        <button class="close-btn" (click)="removeNotification(i)">✖</button>
+      </div>
+      <div *ngIf="taskNotifications.length === 0" class="empty-notification">
+        <p>No new notifications</p>
+      </div>
+    </div> -->
+
+    <a class="profile" id="profPic">
+      <img src="assets/images/user-profile.png" />
+    </a>
+  </nav>
+
   <main>
     <div class="header">
       <div class="left">
@@ -9,10 +49,10 @@
           <li><a class="active">Task List</a></li>
         </ul>
       </div>
-      <a class="report">
+      <!-- <a class="report">
         <i class="bx bx-cloud-download"></i>
         <span>Download Task PDF</span>
-      </a>
+      </a> -->
     </div>
     <!-- Insights -->
     <ul class="insights">
@@ -74,6 +114,7 @@
       [filterType]="filterType"
     >
     </app-task-table>
+    <!-- (newTaskAssigned)="onNewTaskNotification($event)"> -->
   </main>
   <app-addtask-modelpopup
     *ngIf="isModalOpen"

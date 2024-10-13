@@ -9,18 +9,17 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements AfterViewInit {
+export class NavbarComponent {
 
-  constructor(private renderer: Renderer2) {}
-  ngAfterViewInit() {
-    // Theme toggle
-    const toggler = document.getElementById('theme-toggle') as HTMLInputElement;
-    toggler.addEventListener('change', function () {
-      if (toggler.checked) {
-        document.body.classList.add('dark');
-      } else {
-        document.body.classList.remove('dark');
-      }
-    });
-  }
+  // ngAfterViewInit() {
+  //   // Theme toggle
+  //   const toggler = document.getElementById('theme-toggle') as HTMLInputElement;
+  //   toggler.addEventListener('change', function () {
+  //     if (toggler.checked) {
+  //       document.body.classList.add('dark');
+  //     } else {
+  //       document.body.classList.remove('dark');
+  //     }
+  //   });
+  // }
 }

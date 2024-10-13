@@ -150,22 +150,27 @@
     <div class="modal" [class.show]="showInfoModal" (click)="closeInfoModal()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <span class="close" (click)="closeInfoModal()">&times;</span>
-        <h3>Task Details</h3>
-        <p><strong>Task Name:</strong> {{ selectedTask?.taskName }}</p>
-        <p>
-          <strong>Estimated Hours:</strong>
-          {{ selectedTask?.taskEstimatedTime }} hrs
-        </p>
-        <p><strong>Assigned By:</strong> {{ selectedTask?.taskAssign }}</p>
-        <p>
-          <strong>Due On:</strong>
-          {{ selectedTask?.dueDate | date : "dd-MM-yyyy" }}
-        </p>
-        <p><strong>Status:</strong> {{ selectedTask?.status }}</p>
-        <p>
-          <strong>Description:</strong>
-          {{ selectedTask?.description || "No description available" }}
-        </p>
+        <h3 class="modal-title">Task Details</h3>
+        <div class="modal-body">
+          <p><strong>Task Name:</strong> {{ selectedTask?.taskName }}</p>
+          <p>
+            <strong>Estimated Hours:</strong>
+            {{ selectedTask?.taskEstimatedTime }} hrs
+          </p>
+          <p>
+            <strong>{{ assignedColumnTitle }}:</strong>
+            {{ selectedTask?.taskAssign }}
+          </p>
+          <p>
+            <strong>Due On:</strong>
+            {{ selectedTask?.dueDate | date : "dd-MM-yyyy" }}
+          </p>
+          <p><strong>Status:</strong> {{ selectedTask?.status }}</p>
+          <p>
+            <strong>Description:</strong>
+            {{ selectedTask?.description || "No description available" }}
+          </p>
+        </div>
       </div>
     </div>
   </div>

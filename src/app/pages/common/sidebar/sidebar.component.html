@@ -13,7 +13,7 @@
     @if (!isLeftSidebarCollapsed()) {
     <div class="logo-text" *ngIf="user; else noUser">{{ user.name }}</div>
     <ng-template #noUser
-      ><p class="logo-text">No user is logged in.</p></ng-template
+      ><p class="logo-text">No user!</p></ng-template
     >
     <button class="btn-close" (click)="closeSidenav()">
       <i class="fal fa-times close-icon"></i>

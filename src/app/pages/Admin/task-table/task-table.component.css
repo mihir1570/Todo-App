@@ -237,14 +237,14 @@ body.dark td {
     text-align: center;
     padding: 20px;
     color: #888;
-  }
-  
-  .no-tasks i {
+}
+
+.no-tasks i {
     font-size: 50px;
-    color: #ccc; 
+    color: #ccc;
     margin-bottom: 10px;
-  }
-  
+}
+
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -277,6 +277,10 @@ body.dark td {
 }
 
 
+
+
+
+
 /* Task Info Modal Styles */
 .modal {
     position: fixed;
@@ -287,7 +291,8 @@ body.dark td {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Slightly darker for better contrast */
     opacity: 0;
     visibility: hidden;
     transition:
@@ -302,35 +307,48 @@ body.dark td {
 
 .modal-content {
     background-color: var(--light);
-    padding: 20px;
-    border-radius: 12px;
-    width: 80%;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
     max-width: 600px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
-    transform: scale(0.9);
+    transform: scale(0.95);
+    overflow: hidden;
 }
 
 .modal.show .modal-content {
     transform: scale(1);
 }
 
-.modal-content h3 {
+.modal-title {
+    font-size: 1.5rem;
     margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
 }
 
-.modal-content p {
-    font-size: 16px;
-    line-height: 1.5;
+.modal-body {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.modal-body p {
+    margin: 10px 0;
 }
 
 .close {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 15px;
+    right: 20px;
     font-size: 24px;
+    color: #888;
     cursor: pointer;
+    transition: color 0.2s;
+}
 
+.close:hover {
+    color: #ff4d4d;
 }
 
 
@@ -338,12 +356,13 @@ body.dark td {
 .sorting-dropdown {
     position: absolute;
     right: 20px;
-    background-color: #fff;
+    background-color: var(--light);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     animation: dropdownSlideIn 0.3s ease forwards;
     z-index: 1000;
+    border: 1px solid var(--dark);
 }
 
 @keyframes dropdownSlideIn {
@@ -385,7 +404,7 @@ body.dark td {
 }
 
 .sorting-dropdown ul li:hover {
-    background-color: #f0f0f0;
+    background-color: var(--grey);
 }
 
 .sorting-dropdown ul li i {
@@ -398,12 +417,10 @@ body.dark td {
     border-bottom: 1px solid #e0e0e0;
 }
 
-/* Hide dropdown with smooth transition */
 .hide-dropdown {
     animation: dropdownSlideOut 0.3s ease forwards;
 }
 
-/* Add subtle hover effect on the filter icon */
 .bx-filter:hover {
     color: #007bff;
 }

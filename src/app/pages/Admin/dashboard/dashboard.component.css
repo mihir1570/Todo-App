@@ -128,3 +128,100 @@
 .content main .insights li:hover:not(.selected) .info h3 {
     color: var(--primary);
 }
+
+
+
+
+
+  
+.notif {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  /* Notification icon and count */
+  .notif .count {
+    background-color: #ff4b4b;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+  }
+
+  /* Notification dropdown styling */
+.notification-dropdown {
+    position: absolute;
+    top: 45px;
+    right: 15px;
+    width: 280px;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 100;
+  }
+
+
+  /* Dropdown when open */
+.notification-dropdown.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  /* Individual notification item */
+  .notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #333;
+    transition: background 0.3s ease;
+  }
+  
+  .notification-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Hover effect for notification items */
+  .notification-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* Close button for notifications */
+  .notification-item .close-btn {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s ease;
+  }
+  
+  .notification-item .close-btn:hover {
+    color: #ff4b4b;
+  }
+  
+  /* Empty notification message */
+  .empty-notification {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    color: #888;
+  }
+  
+  /* Ensure dropdown responsiveness */
+  @media (max-width: 768px) {
+    .notification-dropdown {
+      width: 240px;
+    }
+  }

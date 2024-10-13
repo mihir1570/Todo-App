@@ -36,6 +36,10 @@ export class TaskTableComponent implements OnInit {
     type: string;
     count: number;
   }>(); // for emitting task counts
+  @Output() newTaskAssigned = new EventEmitter<any>(); // Emit new task as notification
+
+
+
 
   myTaskList: AllTask[] = [];
   todayTaskList: AllTask[] = [];
@@ -43,7 +47,6 @@ export class TaskTableComponent implements OnInit {
   taskOverDueList: AllTask[] = [];
   taskCompletedList: AllTask[] = [];
   paginatedTasks: any[] = [];
-
 
   currentUser: any = null;
   showSortDropdown = false;
@@ -81,6 +84,9 @@ export class TaskTableComponent implements OnInit {
     this.currentView = 'mytask';
     this.updatePaginatedTasks();
     this.emitTaskCount('mytask', this.myTaskList.length);
+    this.apiService.RefreshRequired.subscribe(result => {
+     this.loadAllTasks();
+    });
   }
 
   loadAllTasks() {
@@ -112,6 +118,9 @@ export class TaskTableComponent implements OnInit {
       }));
       this.updatePaginatedTasks();
       this.emitTaskCount('mytask', this.myTaskList.length);
+      this.myTaskList.forEach((task) => {
+        this.newTaskAssigned.emit(task); // Emit new task to parent (Dashboard)
+      });
     });
   }
 
@@ -286,17 +295,17 @@ export class TaskTableComponent implements OnInit {
       case 'createdByMe':
         tasksToPaginate = this.taskCreatedByMeList;
         this.assignedColumnTitle = 'Assign To';
-        this.tableTitle = "Tasks created by you";
+        this.tableTitle = 'Tasks created by you';
         break;
       case 'overdue':
         tasksToPaginate = this.taskOverDueList;
         this.assignedColumnTitle = 'Assigned By';
-        this.tableTitle = "Tasks overdue";
+        this.tableTitle = 'Tasks overdue';
         break;
       case 'taskcomplete':
         tasksToPaginate = this.taskCompletedList;
         this.assignedColumnTitle = 'Assigned By';
-        this.tableTitle = "Tasks completed";
+        this.tableTitle = 'Tasks completed';
         break;
     }
 

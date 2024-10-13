@@ -53,18 +53,15 @@ export class AuthService {
     this.loadUserData();
   }
 
-  // Encrypt the user data before storing it in localStorage
   private encryptData(data: string): string {
     return CryptoJS.AES.encrypt(data, this.secretKey).toString();
   }
 
-  // Decrypt the user data when retrieving it from localStorage
   private decryptData(data: string): string {
     const bytes = CryptoJS.AES.decrypt(data, this.secretKey);
     return bytes.toString(CryptoJS.enc.Utf8);
   }
 
-  // Method to load user data from localStorage
   private loadUserData() {
     const encryptedUser = localStorage.getItem('user');
     if (encryptedUser) {
@@ -73,7 +70,6 @@ export class AuthService {
     }
   }
 
-  // Method to set and save user data to localStorage (with encryption)
   setUserData(user: User) {
     this.currentUser = user;
     const userDataString = JSON.stringify(user);
@@ -81,12 +77,10 @@ export class AuthService {
     localStorage.setItem('user', encryptedData);
   }
 
-  // Method to retrieve user data
   getUserData(): User | null {
     return this.currentUser;
   }
 
-  // Method to clear user data from service and localStorage
   clearUserData() {
     this.currentUser = null;
     localStorage.removeItem('user');
