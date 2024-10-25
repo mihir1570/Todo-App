@@ -458,6 +458,11 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  closeEditModel() {
+    this.isModalOpen = false;
+    this.selectedTask = null;
+  }
+
   duplicateTask(taskId: string, task: any) {
     const userId = this.currentUser?.id;
     if (userId && task.createdById === userId) {
@@ -489,11 +494,6 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   closeInfoModal() {
     this.showInfoModal = false;
-    this.selectedTask = null;
-  }
-
-  closeEditModel() {
-    this.isModalOpen = false;
     this.selectedTask = null;
   }
 

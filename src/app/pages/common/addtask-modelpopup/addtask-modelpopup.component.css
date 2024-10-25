@@ -1,293 +1,316 @@
 .modal-overlay {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    animation: fadeIn 0.3s forwards;
-    z-index: 999;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+  z-index: 999;
 }
 
 .modal-content {
-    overflow: scroll;
-    background: var(--light);
-    border-radius: 12px;
-    padding: 20px;
-    width: 90%;
-    height: auto;
-    max-height: 95vh;
-    max-width: 400px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    transform: translateY(-30px);
-    animation: slideDown 0.3s forwards;
-    color: var(--dark);
-    position: relative;
+  overflow: scroll;
+  background: var(--light);
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  height: auto;
+  max-height: 95vh;
+  max-width: 400px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  transform: translateY(-30px);
+  animation: slideDown 0.3s forwards;
+  color: var(--dark);
+  position: relative;
 }
 
 .modal-content::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .modal-content {
-    scrollbar-width: none;
+  scrollbar-width: none;
 }
 
 body.modal-open {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 body.dark .modal-content {
-    background: var(--dark);
-    color: var(--light);
+  background: var(--dark);
+  color: var(--light);
 }
 
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--grey);
-    padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--grey);
+  padding-bottom: 10px;
 }
 
 body.dark .modal-header {
-    border-bottom: 1px solid var(--light);
+  border-bottom: 1px solid var(--light);
 }
 
 .modal-title {
-    font-size: 24px;
-    color: var(--dark);
+  font-size: 24px;
+  color: var(--dark);
 }
 
 body.dark .modal-title {
-    color: var(--light);
+  color: var(--light);
 }
 
 .close-btn {
-    background: transparent;
-    border: none;
-    font-size: 28px;
-    color: var(--dark);
-    cursor: pointer;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  color: var(--dark);
+  cursor: pointer;
 }
 
 body.dark .close-btn {
-    color: var(--light);
+  color: var(--light);
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: var(--dark);
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--dark);
 }
 
 body.dark label {
-    color: var(--light);
+  color: var(--light);
 }
 
 .input-field {
-    color: var(--dark);
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--dark);
-    border-radius: 6px;
-    transition: border-color 0.3s;
-    font-size: 16px;
-    background-color: var(--light);
+  color: var(--dark);
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--dark);
+  border-radius: 6px;
+  transition: border-color 0.3s;
+  font-size: 16px;
+  background-color: var(--light);
 }
 
 body.dark .input-field {
-    border: 1px solid var(--light);
-    background-color: var(--dark);
-    color: var(--light);
+  border: 1px solid var(--light);
+  background-color: var(--dark);
+  color: var(--light);
 }
 
 .input-field:focus {
-    border-color: #007bff;
-    outline: none;
+  border-color: #007bff;
+  outline: none;
 }
 
 textarea {
-    resize: none;
-    height: 100px;
+  resize: none;
+  height: 100px;
 }
 
 .submit-btn {
-    padding: 12px;
-    background-color: #007bff;
-    color: var(--light);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s, transform 0.3s;
+  padding: 12px;
+  background-color: #007bff;
+  color: var(--light);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 body.dark .submit-btn {
-    background-color: var(--dark);
-    color: var(--grey);
+  background-color: var(--dark);
+  color: var(--grey);
 }
 
 .submit-btn:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .error-text {
-    color: red !important;
-    font-size: 12px;
-    margin-top: 5px;
+  color: red !important;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 .input-field.ng-invalid.ng-touched {
-    border-color: red !important;
+  border-color: red !important;
 }
 
 .dropdown-container {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .dropdown-input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--dark);
-    border-radius: 6px;
-    color: var(--dark);
-    background-color: var(--light);
-    cursor: pointer;
-    font-size: 16px;
-    transition: border-color 0.3s;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--dark);
+  border-radius: 6px;
+  color: var(--dark);
+  background-color: var(--light);
+  cursor: pointer;
+  font-size: 16px;
+  transition: border-color 0.3s;
 }
 
 body.dark .dropdown-input {
-    border: 1px solid var(--light);
-    background-color: var(--grey);
-    color: var(--light);
+  border: 1px solid var(--light);
+  background-color: var(--grey);
+  color: var(--light);
 }
 
 .dropdown-input:focus {
-    border-color: #007bff;
+  border-color: #007bff;
 }
 
 .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 240px;
-    overflow-y: auto;
-    background-color: var(--light);
-    color: var(--dark);
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    margin-top: 8px;
-    z-index: 1;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  background-color: var(--light);
+  color: var(--dark);
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  margin-top: 8px;
+  z-index: 1;
 }
 
 body.dark .dropdown-content {
-    background-color: var(--light);
-    color: var(--light);
+  background-color: var(--light);
+  color: var(--light);
 }
 
 .dropdown-content.show {
-    display: block;
+  display: block;
 }
 
 .dropdown-search-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid var(--dark);
-    background-color: var(--light);
-    color: var(--dark);
-    border-radius: 6px;
-    outline: none;
-    font-size: 16px;
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid var(--dark);
+  background-color: var(--light);
+  color: var(--dark);
+  border-radius: 6px;
+  outline: none;
+  font-size: 16px;
 }
 
 body.dark .dropdown-search-input {
-    border: 1px solid var(--light);
-    background-color: var(--dark);
-    color: var(--light);
+  border: 1px solid var(--light);
+  background-color: var(--dark);
+  color: var(--light);
 }
 
 .dropdown-search-input:focus {
-    border-color: #007bff;
+  border-color: #007bff;
 }
 
 .dropdown-option {
-    padding: 12px;
-    font-size: 16px;
-    color: var(--dark);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  padding: 12px;
+  font-size: 16px;
+  color: var(--dark);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 body.dark .dropdown-option {
-    color: var(--light);
+  color: var(--light);
 }
 
 .dropdown-option:hover {
-    background-color: var(--grey);
-    color: var(--dark);
+  background-color: var(--grey);
+  color: var(--dark);
 }
 
 body.dark .dropdown-option:hover {
-    background-color: var(--grey);
-    color: var(--light);
+  background-color: var(--grey);
+  color: var(--light);
 }
 
 .dropdown-divider {
-    border-top: 1px solid var(--dark);
-    margin: 5px 0;
+  border-top: 1px solid var(--dark);
+  margin: 5px 0;
 }
 
 body.dark .dropdown-divider {
-    border-top: 1px solid var(--grey);
+  border-top: 1px solid var(--grey);
+}
+
+/* Close button styling */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.close-btn i {
+  transition: transform 0.6s ease-in-out, color 0.3s ease-in-out;
+}
+
+.close-btn:hover i {
+  transform: rotate(90deg);
+  color: #ff3333;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideDown {
-    from {
-        transform: translateY(-30px);
-    }
-    to {
-        transform: translateY(0);
-    }
+  from {
+    transform: translateY(-30px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        max-height: 85vh;
-        transform: none;
-        padding: 15px;
-    }
+  .modal-content {
+    width: 95%;
+    max-height: 85vh;
+    transform: none;
+    padding: 15px;
+  }
 }
 
 @media (max-width: 600px) {
-    .modal-content {
-        padding: 20px;
-    }
+  .modal-content {
+    padding: 20px;
+  }
 }

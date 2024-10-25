@@ -135,6 +135,7 @@ export class AddtaskModelpopupComponent implements OnInit, OnDestroy {
       },
     });
   }
+
   selectUser(user: User) {
     this.addTaskForm.controls['taskAssignedTo'].setValue(user.id);
     this.selectedUserName = user.name;
@@ -214,6 +215,10 @@ export class AddtaskModelpopupComponent implements OnInit, OnDestroy {
 
   close() {
     this.closePopup.emit();
+  }
+
+  onBackgroundClick(event: Event) {
+    event.stopPropagation();
   }
 
   ngOnDestroy(): void {

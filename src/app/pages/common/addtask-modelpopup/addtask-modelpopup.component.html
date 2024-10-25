@@ -1,8 +1,10 @@
-<div class="modal-overlay" (click)="close()">
+<div class="modal-overlay" (click)="onBackgroundClick($event)">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h3 class="modal-title">{{ task ? "Edit Task" : "Add Task" }}</h3>
-      <button class="close-btn" (click)="close()">&times;</button>
+      <button class="close-btn" (click)="close()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
     <form [formGroup]="addTaskForm" (ngSubmit)="onTaskSubmit()">
       <!-- Task Title -->
