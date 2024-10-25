@@ -509,6 +509,38 @@ body {
   margin-bottom: 0;
 }
 
+/* app.component.css or your relevant CSS file */
+
+/* Tooltip container */
+.tooltip-container {
+  position: relative; /* For positioning the tooltip */
+  display: inline-block; /* Make sure the button and tooltip are inline */
+}
+
+/* Tooltip styling */
+.tooltip {
+  visibility: hidden; /* Hidden by default */
+  width: 120px; /* Set width as needed */
+  background-color: #333; /* Tooltip background color */
+  color: #fff; /* Tooltip text color */
+  text-align: center; /* Center the text */
+  border-radius: 5px; /* Rounded corners */
+  padding: 5px; /* Padding around the text */
+  position: absolute; /* Absolute positioning */
+  z-index: 1; /* Sit on top */
+  bottom: 125%; /* Position above the button */
+  left: 50%; /* Center tooltip */
+  margin-left: -60px; /* Center alignment */
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s; /* Smooth transition for visibility */
+}
+
+/* Show tooltip on hover */
+.tooltip-container:hover .tooltip {
+  visibility: visible; /* Show tooltip */
+  opacity: 1; /* Make it visible */
+}
+
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 200px;

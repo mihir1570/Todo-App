@@ -3,8 +3,15 @@
     <div class="header">
       <i class="bx bx-task"></i>
       <h3>{{ tableTitle }}</h3>
-      <i class="bx bx-filter" (click)="toggleSortDropdown()"></i>
-      <i class="bx bx-plus" (click)="addTaskClicked.emit()"></i>
+
+      <div class="tooltip-container">
+        <i class="bx bx-filter" (click)="toggleSortDropdown()"></i>
+        <span class="tooltip">Filter Task</span>
+      </div>
+      <div class="tooltip-container">
+        <i class="bx bx-plus" (click)="addTaskClicked.emit()"></i>
+        <span class="tooltip">Add Task</span>
+      </div>
     </div>
 
     <!-- Sorting Dropdown -->
@@ -105,27 +112,43 @@
                 </select>
               </td>
               <td>
-                <button
-                  class="action-btn duplicate"
-                  (click)="duplicateTask(task.id, task)"
-                >
-                  <i class="fas fa-copy"></i>
-                </button>
-                <button class="action-btn edit" (click)="onEditTask(task)">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button
-                  class="action-btn delete"
-                  (click)="openDeleteModal(task)"
-                >
-                  <i class="fas fa-trash"></i>
-                </button>
-                <button
-                  class="action-btn more-info"
-                  (click)="openInfoModal(task)"
-                >
-                  <i class="fas fa-info-circle"></i>
-                </button>
+                <!-- Your button with tooltip -->
+                <div class="tooltip-container">
+                  <button
+                    class="action-btn duplicate"
+                    (click)="duplicateTask(task.id, task)"
+                  >
+                    <i class="fas fa-copy"></i>
+                  </button>
+                  <span class="tooltip">Duplicate Task</span>
+                </div>
+
+                <div class="tooltip-container">
+                  <button class="action-btn edit" (click)="onEditTask(task)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <span class="tooltip">Edit Task</span>
+                </div>
+
+                <div class="tooltip-container">
+                  <button
+                    class="action-btn delete"
+                    (click)="openDeleteModal(task)"
+                  >
+                    <i class="fas fa-trash"></i>
+                    <span class="tooltip">Delete Task</span>
+                  </button>
+                </div>
+
+                <div class="tooltip-container">
+                  <button
+                    class="action-btn more-info"
+                    (click)="openInfoModal(task)"
+                  >
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip">Inoformation</span>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
