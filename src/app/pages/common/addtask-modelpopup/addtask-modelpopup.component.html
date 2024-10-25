@@ -5,13 +5,13 @@
       <button class="close-btn" (click)="close()">&times;</button>
     </div>
     <form [formGroup]="addTaskForm" (ngSubmit)="onTaskSubmit()">
-      
       <!-- Task Title -->
       <div class="form-group">
         <label for="taskTitle">Task Title</label>
         <input
           type="text"
           id="taskTitle"
+          #taskTitleInput
           formControlName="taskTitle"
           required
           class="input-field"
@@ -29,9 +29,18 @@
             Task title is required.
           </ng-container>
           <ng-container
-            *ngIf="addTaskForm.controls['taskTitle'].hasError('minlength')"
+            *ngIf="
+              addTaskForm.controls['taskTitle'].hasError('trimmedMinLength')
+            "
           >
-            Title must be at least 3 characters long.
+            Title must be at least 3 characters long
+          </ng-container>
+          <ng-container
+            *ngIf="
+              addTaskForm.controls['taskTitle'].hasError('trimmedMaxLength')
+            "
+          >
+            Title cannot be more than 25 characters
           </ng-container>
         </div>
       </div>
@@ -118,7 +127,7 @@
       </div>
 
       <!-- Estimated Time -->
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="estimatedTime">Estimated Time (hours)</label>
         <input
           type="number"
@@ -144,7 +153,49 @@
           "
           class="error-text"
         >
-        Estimated time exceeds available hours.
+          Estimated time exceeds available hours.
+        </small>
+      </div> -->
+
+      <!-- Estimated Time -->
+      <div class="form-group">
+        <label for="estimatedTime">Estimated Time (hours)</label>
+        <input
+          type="text"
+          id="estimatedTime"
+          formControlName="taskEstimatedTime"
+          min="1"
+          required
+          class="input-field"
+        />
+        <small
+          *ngIf="
+            addTaskForm.controls['taskEstimatedTime'].touched &&
+            addTaskForm.controls['taskEstimatedTime'].hasError('required')
+          "
+          class="error-text"
+        >
+          Estimated time is required.
+        </small>
+        <small
+          *ngIf="
+            addTaskForm.controls['taskEstimatedTime'].touched &&
+            addTaskForm.controls['taskEstimatedTime'].hasError(
+              'invalidTimeFormat'
+            )
+          "
+          class="error-text"
+        >
+          Invalid time format. Example of valid input: 5, 5.30, 0.30
+        </small>
+        <small
+          *ngIf="
+            addTaskForm.hasError('invalidTimeError') &&
+            addTaskForm.controls['taskEstimatedTime'].touched
+          "
+          class="error-text"
+        >
+          Estimated time exceeds available hours.
         </small>
       </div>
 
@@ -157,6 +208,7 @@
           formControlName="taskDueDate"
           required
           class="input-field"
+          inputmode="numeric"
         />
         <small
           *ngIf="

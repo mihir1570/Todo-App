@@ -6,6 +6,9 @@ import {
   Output,
   OnInit,
   Input,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
 } from '@angular/core';
 import {
   FormControl,
@@ -14,12 +17,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ToastService } from '../../../core/services/common services/toast.service';
 import { Task } from '../../../core/models/class/task';
-import { AuthService } from '../../../core/services/common services/auth.service';
-import { ApiService } from '../../../core/services/API services/api.service';
 import { User } from '../../../core/models/interface/user';
-import { TaskValidatorService } from '../../../core/services/common services/task-validator.service';
+import { ToastService } from '../../../services/common services/toast.service';
+import { ApiService } from '../../../services/API services/api.service';
+import { AuthService } from '../../../services/common services/auth.service';
+import { TaskValidatorService } from '../../../services/common services/task-validator.service';
+import { CustomValidators } from '../../../core/utils/validator';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-addtask-modelpopup',
@@ -28,8 +33,10 @@ import { TaskValidatorService } from '../../../core/services/common services/tas
   templateUrl: './addtask-modelpopup.component.html',
   styleUrls: ['./addtask-modelpopup.component.css'],
 })
-export class AddtaskModelpopupComponent implements OnInit {
+export class AddtaskModelpopupComponent implements OnInit, OnDestroy {
+  @ViewChild('taskTitleInput') taskTitleInput!: ElementRef; // For focusing task title input
   @Output() closePopup = new EventEmitter<void>();
+
   @Input() task: any;
   @Input() taskId: any;
   users: User[] = [];
@@ -37,25 +44,49 @@ export class AddtaskModelpopupComponent implements OnInit {
   taskList: Task[] = [];
 
   isDropdownOpen = false;
-
   selectedUserName: string = '';
+
+  subscriptionList: Subscription[] = [];
+
+  // addTaskForm: FormGroup = new FormGroup(
+  //   {
+  //     taskTitle: new FormControl('', [
+  //       Validators.required,
+  //       CustomValidators.trimmedMinLength(3),
+  //       CustomValidators.trimmedMaxLength(25),
+  //     ]),
+  //     taskDescription: new FormControl('', [
+  //       Validators.required,
+  //       Validators.minLength(10),
+  //       Validators.maxLength(250),
+  //     ]),
+  //     taskAssignedTo: new FormControl('', [Validators.required]),
+  //     taskEstimatedTime: new FormControl('', [Validators.required]),
+  //     taskDueDate: new FormControl('', [Validators.required]),
+  //   },
+  //   { validators: TaskValidatorService.validateTaskTime() } // Apply custom validator
+  // );
 
   addTaskForm: FormGroup = new FormGroup(
     {
       taskTitle: new FormControl('', [
         Validators.required,
-        Validators.minLength(3),
+        CustomValidators.trimmedMinLength(3),
+        CustomValidators.trimmedMaxLength(25),
       ]),
       taskDescription: new FormControl('', [
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(250),
       ]),
-      taskAssignedTo: new FormControl('', [Validators.required]), // Selected user's ID
-      taskEstimatedTime: new FormControl('', [Validators.required]),
+      taskAssignedTo: new FormControl('', [Validators.required]),
+      taskEstimatedTime: new FormControl('', [
+        Validators.required,
+        TaskValidatorService.validTimeFormat(), // Apply the new validator here
+      ]),
       taskDueDate: new FormControl('', [Validators.required]),
     },
-    { validators: TaskValidatorService.validateTaskTime() } // Apply custom validator
+    { validators: TaskValidatorService.validateTaskTime() } // Apply custom validator for date & time
   );
 
   constructor(
@@ -68,8 +99,12 @@ export class AddtaskModelpopupComponent implements OnInit {
     this.fetchAllUsers();
     if (this.task) {
       this.populateForm(this.task);
-      console.log(this.task);
+      // console.log(this.task);
     }
+  }
+
+  ngAfterViewInit() {
+    this.taskTitleInput.nativeElement.focus();
   }
 
   populateForm(task: any) {
@@ -79,32 +114,27 @@ export class AddtaskModelpopupComponent implements OnInit {
       taskDescription: task.description,
       taskEstimatedTime: task.taskEstimatedTime,
       taskDueDate: task.dueDate.toISOString().slice(0, 10),
-      taskAssignedTo: task.taskAssignedTo,
+      taskAssign: task.taskAssign,
+      taskAssignedTo: task.AssignToId,
     });
-
-    // Set the selectedUserName based on the user ID
-    const selectedUser = this.users.find(
-      (user) => user.id === task.taskAssignedTo
-    );
-    if (selectedUser) {
-      this.selectedUserName = selectedUser.name; // Set the selected user's name
-    }
+    this.selectedUserName = task.taskAssign;
   }
-
 
   // Fetch users from API
   fetchAllUsers() {
-    this.apiService.getAllUsers().subscribe(
-      (res: any) => {
+    this.apiService.getAllUsers().subscribe({
+      next: (res: { data: User[] }) => {
         this.users = res.data;
         this.filteredUsers = this.users;
       },
-      (error) => {
-        console.error('Error fetching users:', error); // Log any error
-      }
-    );
+      error: (error: any) => {
+        console.error('Error fetching users:', error);
+      },
+      complete: () => {
+        console.log('User fetching operation completed.');
+      },
+    });
   }
-
   selectUser(user: User) {
     this.addTaskForm.controls['taskAssignedTo'].setValue(user.id);
     this.selectedUserName = user.name;
@@ -119,54 +149,51 @@ export class AddtaskModelpopupComponent implements OnInit {
     );
   }
 
-
+  // Add and Edit Task
   onTaskSubmit() {
     if (this.addTaskForm.valid) {
+      debugger;
       const currentUser = this.authService.getUserData();
-      const formData = this.addTaskForm.value;
       if (!currentUser) {
         this.toastService.showError('No user logged in');
         return;
       }
-      // Create a Task object with the updated data
-      const updatedTask = new Task();
-      updatedTask.title = this.addTaskForm.controls['taskTitle'].value;
-      updatedTask.description =
-        this.addTaskForm.controls['taskDescription'].value;
-      updatedTask.assignedTo =
-        this.addTaskForm.controls['taskAssignedTo'].value; // Selected user's ID
-      updatedTask.dueDate = new Date(
-        this.addTaskForm.controls['taskDueDate'].value
-      );
-      updatedTask.estimatedHours =
+      // Create a Task object with the form data
+      const task = new Task();
+      debugger;
+      task.title = this.addTaskForm.controls['taskTitle'].value.trim();
+      task.description =
+        this.addTaskForm.controls['taskDescription'].value.trim();
+      task.assignedTo =
+        this.addTaskForm.controls['taskAssignedTo'].value.trim();
+      task.dueDate = new Date(this.addTaskForm.controls['taskDueDate'].value);
+      task.estimatedHours =
         this.addTaskForm.controls['taskEstimatedTime'].value;
-      updatedTask.createdBy = currentUser.id;
 
-      // Check if editing or adding a task
-      if (this.taskId) {
-        console.log(updatedTask);
-        this.apiService.updateTask(this.taskId, updatedTask).subscribe(
-          (response) => {
-            this.toastService.showSuccess('Task successfully updated!');
+      // Call the save method
+      const destoryAddUpdateTask = this.apiService
+        .save(this.taskId, task)
+        .subscribe({
+          next: (response) => {
+            // console.log('Task saved successfully:', response);
+            const message = this.taskId
+              ? 'Task successfully updated!'
+              : 'Task successfully added!';
+            this.toastService.showSuccess(message);
             this.close();
           },
-          (error) => {
-            this.toastService.showError('Failed to update task.');
-          }
-        );
-      } else {
-        // If adding, submit the new task to the API
-        this.apiService.addTask(updatedTask).subscribe(
-          (response) => {
-            this.toastService.showSuccess('Task successfully added!');
-            this.close();
+          error: (error) => {
+            const errorMessage = this.taskId
+              ? 'Failed to update task.'
+              : 'Failed to add task.';
+            this.toastService.showError(errorMessage);
+            // console.log(errorMessage, error);
           },
-          (error) => {
-            this.toastService.showError('Failed to add task.');
-           
-          }
-        );
-      }
+          complete: () => {
+            // console.log('Task operation complete.');
+          },
+        });
+      this.subscriptionList.push(destoryAddUpdateTask);
     } else {
       this.toastService.showError('Please fill all fields correctly.');
       this.addTaskForm.markAllAsTouched();
@@ -187,5 +214,11 @@ export class AddtaskModelpopupComponent implements OnInit {
 
   close() {
     this.closePopup.emit();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((sub: Subscription) => {
+      sub.unsubscribe();
+    });
   }
 }

@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './pages/Admin/dashboard/dashboard.component';
-import { LoginComponent } from './pages/Admin/login/login.component';
-import { MainComponent } from './pages/main/main/main.component';
 import { LoginGuard } from './core/guards/login.guard';
+import { LoginComponent } from './pages/user/login/login.component';
+import { DashboardComponent } from './pages/user/dashboard/dashboard.component';
+import { SidebarComponent } from './pages/common/sidebar/sidebar.component';
+import { MainComponent } from './pages/main/main/main.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'main',
     pathMatch: 'full',
   },
   {
@@ -15,8 +16,15 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
+    path: 'main',
+    component: MainComponent,
     canActivate: [LoginGuard], // Protect this route
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [LoginGuard], // Protect this route
+      },
+    ],
   },
 ];

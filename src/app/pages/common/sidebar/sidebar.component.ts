@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, input, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { LoginService } from '../../../core/services/common services/login.service';
-import { AuthService } from '../../../core/services/common services/auth.service';
 import { User } from '../../../core/models/interface/user';
+import { LoginService } from '../../../services/common services/login.service';
+import { AuthService } from '../../../services/common services/auth.service';
 
 @Component({
   selector: 'app-sidebar',

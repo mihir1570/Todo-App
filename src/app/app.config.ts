@@ -13,11 +13,13 @@ import {
 } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor } from './core/interceptor/auth.interceptor';
+import { OrderByPipe } from './core/pips/orderby.pipe';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    OrderByPipe,
     provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom([BrowserAnimationsModule]),
     provideAnimations(),
